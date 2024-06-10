@@ -1,4 +1,4 @@
-export interface ApiResponse<T> {
+export interface TApiResponse<T> {
   status: string;
   data: T;
 }

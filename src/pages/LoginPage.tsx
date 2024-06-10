@@ -3,10 +3,10 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useLoginMutation } from "../redux/auth/authApiSlice.ts";
-import { setCredentials } from "../redux/auth/authSlice.ts";
+import { useLoginMutation } from "../redux/feature/auth/authApiSlice.ts";
+import { setCredentials } from "../redux/feature/auth/authSlice.ts";
 import { RootState } from "../redux/store.ts";
-import { ApiError } from "../redux/types/TApiError.ts";
+import { TApiError } from "../redux/types/TApiError.ts";
 
 interface LoginFormInputs {
   email: string;
@@ -38,7 +38,7 @@ export function LoginPage() {
       const res = await login(credential).unwrap();
       dispatch(setCredentials({ ...res.data }));
     } catch (error) {
-      const apiError = error as ApiError;
+      const apiError = error as TApiError;
       toast.error(apiError.data.message);
     }
   };

@@ -1,6 +1,6 @@
-import { AUTH_URL } from "../endpoints.ts";
-import apiSlice from "../apiSlice";
-import { ApiResponse } from "../types/TApiResponse.ts";
+import { AUTH_URL } from "../../endpoints.ts";
+import apiSlice from "../../apiSlice.ts";
+import { TApiResponse } from "../../types/TApiResponse.ts";
 
 interface LoginRequest {
   email: string;
@@ -22,20 +22,20 @@ interface User {
 
 const authSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    login: builder.mutation<ApiResponse<User>, LoginRequest>({
+    login: builder.mutation<TApiResponse<User>, LoginRequest>({
       query: (data) => ({
         url: `${AUTH_URL}/login`,
         method: "POST",
         body: data,
       }),
     }),
-    logout: builder.mutation<ApiResponse<null>, void>({
+    logout: builder.mutation<TApiResponse<null>, void>({
       query: () => ({
         url: `${AUTH_URL}/logout`,
         method: "POST",
       }),
     }),
-    register: builder.mutation<ApiResponse<string>, RegisterRequest>({
+    register: builder.mutation<TApiResponse<string>, RegisterRequest>({
       query: (data) => ({
         url: `${AUTH_URL}/register`,
         method: "POST",

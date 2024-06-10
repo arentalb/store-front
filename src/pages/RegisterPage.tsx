@@ -3,9 +3,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import { useRegisterMutation } from "../redux/auth/authApiSlice.ts";
+import { useRegisterMutation } from "../redux/feature/auth/authApiSlice.ts";
 import { RootState } from "../redux/store.ts";
-import { ApiError } from "../redux/types/TApiError.ts"; // Ensure this import path is correct
+import { TApiError } from "../redux/types/TApiError.ts"; // Ensure this import path is correct
 
 interface RegisterFormInputs {
   email: string;
@@ -40,7 +40,7 @@ export function RegisterPage() {
       navigate("/login");
       reset();
     } catch (error) {
-      const apiError = error as ApiError;
+      const apiError = error as TApiError;
       toast.error(apiError.data.message);
     }
   };
