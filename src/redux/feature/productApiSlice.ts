@@ -23,11 +23,11 @@ const productApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
-    createProduct: builder.mutation<TApiResponse<TProduct>, Partial<TProduct>>({
-      query: (product) => ({
+    createProduct: builder.mutation<TApiResponse<TProduct>, FormData>({
+      query: (formData) => ({
         url: `${PRODUCT_URL}`,
         method: "POST",
-        body: product,
+        body: formData,
       }),
     }),
     updateProduct: builder.mutation<
