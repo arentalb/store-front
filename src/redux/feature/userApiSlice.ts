@@ -1,7 +1,7 @@
 import apiSlice from "../apiSlice.ts";
 import { TApiResponse } from "../types/TApiResponse.ts";
 import { USERS_URL } from "../endpoints.ts";
-import { TUser } from "../types/TUser.ts";
+import { TUser, TUserDetail } from "../types/TUser.ts";
 import { TPassword } from "../../pages/ProfilePage.tsx";
 
 const userApiSlice = apiSlice.injectEndpoints({
@@ -26,7 +26,7 @@ const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    getUsers: builder.query<TApiResponse<TUser[]>, void>({
+    getUsers: builder.query<TApiResponse<TUserDetail[]>, void>({
       query: () => ({
         url: `${USERS_URL}/admin`,
         method: "GET",
