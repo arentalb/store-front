@@ -1,15 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store.ts";
-
-interface User {
-  username: string;
-  email: string;
-  role: string;
-  isVerified: boolean;
-}
+import { TUser } from "../../types/TUser.ts";
 
 interface AuthState {
-  user: User | null;
+  user: TUser | null;
 }
 
 const initialState: AuthState = {
@@ -22,7 +16,7 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setCredentials: (state, action: PayloadAction<User>) => {
+    setCredentials: (state, action: PayloadAction<TUser>) => {
       state.user = action.payload;
       localStorage.setItem("user", JSON.stringify(action.payload));
     },
@@ -33,7 +27,7 @@ const authSlice = createSlice({
   },
 });
 
-export const getUser = (state: RootState): User | null => state.auth.user;
+export const getUser = (state: RootState): TUser | null => state.auth.user;
 
 export const { setCredentials, logOut } = authSlice.actions;
 export default authSlice.reducer;
