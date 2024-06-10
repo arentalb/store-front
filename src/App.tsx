@@ -11,7 +11,8 @@ import { AdminOrderListPage } from "./pages/admin/AdminOrderListPage.tsx";
 import { AdminOrderDetailPage } from "./pages/admin/AdminOrderDetailPage.tsx";
 import { AdminProductsPage } from "./pages/admin/product/AdminProductsPage.tsx";
 import { AdminProductList } from "./pages/admin/product/AdminProductList.tsx";
-import { AdminProductForm } from "./pages/admin/product/AdminProductForm.tsx";
+import { AdminProductFormAdd } from "./pages/admin/product/AdminProductFormAdd.tsx";
+import { AdminProductFormEdit } from "./pages/admin/product/AdminProductFormEdit.tsx";
 
 function App() {
   return (
@@ -38,8 +39,8 @@ function App() {
             <Route path="product" element={<AdminProductsPage />}>
               <Route index element={<Navigate to="all" replace />} />
               <Route path="all" element={<AdminProductList />} />
-              <Route path="new" element={<AdminProductForm />} />
-              <Route path="edit/:id" element={<AdminProductForm />} />
+              <Route path="new" element={<AdminProductFormAdd />} />
+              <Route path="edit/:id" element={<AdminProductFormEdit />} />
             </Route>
           </Route>
           <Route path="*" element={<p>Not Found</p>} />
