@@ -5,6 +5,13 @@ import { AppLayout } from "./components/AppLayout.tsx";
 import { HomePage } from "./pages/HomePage.tsx";
 import { PrivateRoute } from "./utils/PrivateRoute.tsx";
 import { ProfilePage } from "./pages/ProfilePage.tsx";
+import { AdminUsersPage } from "./pages/admin/AdminUsersPage.tsx";
+import { AdminCategoryPage } from "./pages/admin/AdminCategoryPage.tsx";
+import { AdminOrderListPage } from "./pages/admin/AdminOrderListPage.tsx";
+import { AdminOrderDetailPage } from "./pages/admin/AdminOrderDetailPage.tsx";
+import { AdminProductsPage } from "./pages/admin/product/AdminProductsPage.tsx";
+import { AdminProductList } from "./pages/admin/product/AdminProductList.tsx";
+import { AdminProductForm } from "./pages/admin/product/AdminProductForm.tsx";
 
 function App() {
   return (
@@ -20,6 +27,22 @@ function App() {
           >
             <Route path="/profile" element={<ProfilePage />} />
           </Route>
+          <Route
+            path={"/admin"}
+            element={<PrivateRoute roles={["Admin", "SuperAdmin"]} />}
+          >
+            <Route path="users" element={<AdminUsersPage />} />
+            <Route path="category" element={<AdminCategoryPage />} />
+            <Route path="orders" element={<AdminOrderListPage />} />
+            <Route path="orders/:id" element={<AdminOrderDetailPage />} />
+            <Route path="product" element={<AdminProductsPage />}>
+              <Route index element={<Navigate to="all" replace />} />
+              <Route path="all" element={<AdminProductList />} />
+              <Route path="new" element={<AdminProductForm />} />
+              <Route path="edit/:id" element={<AdminProductForm />} />
+            </Route>
+          </Route>
+          <Route path="*" element={<p>Not Found</p>} />
         </Route>
       </Routes>
     </BrowserRouter>
