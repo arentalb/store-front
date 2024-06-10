@@ -5,11 +5,9 @@ import { TProduct } from "../types/TProduct.ts";
 
 const productApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getProducts: builder.query<TApiResponse<TProduct[]>, string | undefined>({
-      query: (category) => ({
-        url: category
-          ? `${PRODUCT_URL}?category=${category}`
-          : `${PRODUCT_URL}`,
+    getProducts: builder.query<TApiResponse<TProduct[]>, void>({
+      query: () => ({
+        url: `${PRODUCT_URL}`,
         method: "GET",
       }),
     }),
