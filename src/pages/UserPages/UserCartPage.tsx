@@ -1,8 +1,5 @@
-// src/pages/CartPage.tsx
 import { toast } from "react-toastify";
-import { FiMinus, FiPlus } from "react-icons/fi";
 import { Link } from "react-router-dom";
-import { TCartItem } from "../../types/TCart";
 import { TApiError } from "../../types/TApiError";
 import {
   useGetCartQuery,
@@ -10,6 +7,7 @@ import {
   useUpdateCartItemMutation,
 } from "../../redux/cart/cartApiSlice.ts";
 import { Loader } from "../../components/common/Loader.tsx";
+import { CartItems } from "../../components/user/CartItems";
 
 export function UserCartPage() {
   const {
@@ -83,76 +81,6 @@ export function UserCartPage() {
       ) : (
         <p className="text-center text-gray-500">Your cart is empty.</p>
       )}
-    </div>
-  );
-}
-
-function CartItems({
-  items,
-  handleUpdateCartItem,
-  handleRemoveCartItem,
-}: {
-  items: TCartItem[];
-  handleUpdateCartItem: (productId: string, quantity: number) => void;
-  handleRemoveCartItem: (productId: string) => void;
-}) {
-  return (
-    <div className="space-y-4">
-      {items.map((item) => (
-        <CartItem
-          key={item.product}
-          item={item}
-          handleUpdateCartItem={handleUpdateCartItem}
-          handleRemoveCartItem={handleRemoveCartItem}
-        />
-      ))}
-    </div>
-  );
-}
-
-function CartItem({
-  item,
-  handleUpdateCartItem,
-  handleRemoveCartItem,
-}: {
-  item: TCartItem;
-  handleUpdateCartItem: (productId: string, quantity: number) => void;
-  handleRemoveCartItem: (productId: string) => void;
-}) {
-  return (
-    <div className="flex justify-between sm:items-center items-start flex-col sm:flex-row p-4 border rounded-lg shadow-md">
-      <div className="flex items-center space-x-4 mb-4 sm:mb-0">
-        <img
-          src={item.coverImage}
-          alt={item.name}
-          className="w-20 h-20 object-cover rounded-lg"
-        />
-        <div>
-          <p className="font-semibold">{item.name}</p>
-          <p className="text-gray-500">Quantity: {item.quantity}</p>
-        </div>
-      </div>
-      <div className="flex space-x-2">
-        <button
-          onClick={() => handleUpdateCartItem(item.product, item.quantity - 1)}
-          className="btn btn-square btn-primary"
-        >
-          <FiMinus />
-        </button>
-        <button
-          onClick={() => handleUpdateCartItem(item.product, item.quantity + 1)}
-          className="btn btn-square btn-primary"
-        >
-          <FiPlus />
-        </button>
-
-        <button
-          onClick={() => handleRemoveCartItem(item.product)}
-          className="btn btn-error"
-        >
-          Remove
-        </button>
-      </div>
     </div>
   );
 }
