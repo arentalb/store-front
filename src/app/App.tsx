@@ -13,6 +13,8 @@ import { AdminProductsPage } from "../pages/AdminPages/AdminProductsPage.tsx";
 import { AdminProductListPage } from "../pages/AdminPages/product/AdminProductListPage.tsx";
 import { AdminProductFormAddPage } from "../pages/AdminPages/product/AdminProductFormAddPage.tsx";
 import { AdminProductFormEditPage } from "../pages/AdminPages/product/AdminProductFormEditPage.tsx";
+import { UserProductsPage } from "../pages/UserPages/UserProductsPage.tsx";
+import { UserProductDetailPage } from "../pages/UserPages/UserProductDetailPage.tsx";
 
 function App() {
   return (
@@ -28,6 +30,12 @@ function App() {
           >
             <Route path="/profile" element={<ProfilePage />} />
           </Route>
+
+          <Route element={<PrivateRoute roles={["User"]} />}>
+            <Route path="/products" element={<UserProductsPage />} />
+            <Route path="/product/:id" element={<UserProductDetailPage />} />
+          </Route>
+
           <Route
             path={"/admin"}
             element={<PrivateRoute roles={["Admin", "SuperAdmin"]} />}
