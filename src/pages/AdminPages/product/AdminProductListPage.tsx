@@ -1,9 +1,11 @@
+// src/pages/AdminPages/AdminProductListPage.tsx
+
 import { useGetProductsQuery } from "../../../redux/product/productApiSlice.ts";
 import { useNavigate } from "react-router-dom";
 import { TApiError } from "../../../types/TApiError.ts";
 import { toast } from "react-toastify";
-import moment from "moment/moment";
 import { Loader } from "../../../components/common/Loader.tsx";
+import { ProductItem } from "../../../components/admin/ProductItem.tsx";
 
 export function AdminProductListPage() {
   const {
@@ -21,15 +23,10 @@ export function AdminProductListPage() {
     toast.error(apiError?.data?.message || "An error occurred");
   }
 
-  function showDetailHandler(id: string) {
-    navigate(`/admin/product/edit/${id}`);
-  }
-
   return (
     <div>
       <div className="flex justify-between">
         <h1 className="text-2xl mb-8">All Products ({products?.length})</h1>
-
         <button
           className="btn btn-primary"
           onClick={() => navigate("/admin/product/new")}
@@ -42,37 +39,7 @@ export function AdminProductListPage() {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {products?.map((product) => (
-            <div
-              key={product._id}
-              className="shadow-lg rounded-lg overflow-hidden flex flex-col md:flex-row gap-4 p-4 bg-white"
-            >
-              <div className="md:w-1/3 xl:w-1/4">
-                <img
-                  src={product.coverImage}
-                  alt={product.name}
-                  className="object-cover h-28 md:h-full w-full rounded"
-                />
-              </div>
-              <div className="flex flex-col justify-between md:w-2/3 xl:w-3/4">
-                <div>
-                  <div className="flex justify-between">
-                    <p className="text-lg font-semibold">{product.name}</p>
-                    <p className="text-sm text-gray-500">
-                      {moment(product.updatedAt).format("MMM Do YY")}
-                    </p>
-                  </div>
-                  <p className="text-sm text-gray-600 mb-4">
-                    {product.description.substring(0, 100)} ...
-                  </p>
-                </div>
-                <button
-                  onClick={() => showDetailHandler(product._id)}
-                  className="btn btn-primary btn-sm w-28 sm:w-36 self-start"
-                >
-                  Edit
-                </button>
-              </div>
-            </div>
+            <ProductItem key={product._id} product={product} />
           ))}
         </div>
       )}
