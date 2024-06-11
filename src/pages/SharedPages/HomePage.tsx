@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useGetNewProductsQuery } from "../../redux/product/productApiSlice.ts";
-import { TProduct } from "../../types/TProduct.ts";
 import { TApiError } from "../../types/TApiError.ts";
 import { useGetCategoriesQuery } from "../../redux/category/categoryApiSlice.ts";
-import { TCategory } from "../../types/TCategory.ts";
 import { Loader } from "../../components/common/Loader.tsx";
+import { Category } from "../../components/home/Category";
+import { NewProduct } from "../../components/home/NewProduct";
 
 export function HomePage() {
   const {
@@ -41,7 +41,7 @@ export function HomePage() {
       >
         <div className="hero-overlay bg-opacity-60"></div>
         <div className="hero-content text-center text-neutral-content">
-          <div className="">
+          <div>
             <h1 className="mb-5 text-2xl md:text-5xl font-bold">
               Welcome to Store!
             </h1>
@@ -61,9 +61,9 @@ export function HomePage() {
           <h1 className="text-2xl mb-8">NEW PRODUCTS</h1>
           <div className="overflow-x-auto md:overflow-x-visible mb-12">
             <div className="flex md:grid md:grid-cols-4 gap-4">
-              {newProductsData?.data?.map((pro: TProduct) => (
-                <div key={pro._id} className="flex-shrink-0 w-64 md:w-auto">
-                  <NewProduct pro={pro} key={pro._id} />
+              {newProductsData?.data?.map((product) => (
+                <div key={product._id} className="flex-shrink-0 w-64 md:w-auto">
+                  <NewProduct product={product} />
                 </div>
               ))}
             </div>
@@ -72,62 +72,15 @@ export function HomePage() {
           <h1 className="text-2xl mb-8">CATEGORIES</h1>
           <div className="overflow-x-auto md:overflow-x-visible mb-12">
             <div className="flex flex-wrap md:grid md:grid-cols-4 gap-4">
-              {categoriesData?.data.map((cat: TCategory) => (
-                <div key={cat._id} className=" md:w-auto">
-                  <Category cat={cat} key={cat._id} />
+              {categoriesData?.data.map((category) => (
+                <div key={category._id} className="md:w-auto">
+                  <Category category={category} />
                 </div>
               ))}
             </div>
           </div>
         </>
       )}
-    </div>
-  );
-}
-
-function Category({ cat }: { cat: TCategory }) {
-  return (
-    <Link
-      to={`/products/?category=${cat.name}`}
-      className={"btn-primary btn md:w-full"}
-    >
-      {cat.name}
-    </Link>
-  );
-}
-
-function NewProduct({ pro }: { pro: TProduct }) {
-  return (
-    <div
-      key={pro._id}
-      className="shadow-lg rounded-lg overflow-hidden flex flex-col h-full gap-4 p-4 bg-white"
-    >
-      <div className="w-full">
-        <img
-          src={pro.coverImage}
-          alt={pro.name}
-          className="object-cover h-28  w-full rounded"
-        />
-      </div>
-      <div className="flex  justify-between   py-4">
-        <div>
-          <p className="text-lg uppercase font-semibold">{pro.name}</p>
-          <p className="text-base text-gray-500 ">
-            {pro.price}
-            {" IQD"}
-          </p>
-        </div>
-        <p className="text-sm text-gray-600 whitespace-nowrap">
-          {pro.stock > 0 ? "In Stock" : "Out Of Stock"}
-        </p>
-      </div>
-
-      <Link
-        to={`/product/${pro._id}`}
-        className="btn btn-primary w-full self-end mt-auto"
-      >
-        See Detail
-      </Link>
     </div>
   );
 }
