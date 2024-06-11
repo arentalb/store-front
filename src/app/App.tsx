@@ -17,6 +17,8 @@ import { UserProductsPage } from "../pages/UserPages/UserProductsPage.tsx";
 import { UserProductDetailPage } from "../pages/UserPages/UserProductDetailPage.tsx";
 import { UserCartPage } from "../pages/UserPages/UserCartPage.tsx";
 import { UserCheckoutPage } from "../pages/UserPages/UserCheckoutPage.tsx";
+import { UserOrdersPage } from "../pages/UserPages/UserOrdersPage.tsx";
+import { UserOrderDetailPage } from "../pages/UserPages/UserOrderDetailPage.tsx";
 
 function App() {
   return (
@@ -38,6 +40,8 @@ function App() {
             <Route path="/product/:id" element={<UserProductDetailPage />} />
             <Route path="/cart" element={<UserCartPage />} />
             <Route path="/checkout" element={<UserCheckoutPage />} />
+            <Route path="/orders" element={<UserOrdersPage />} />
+            <Route path="/orders/:id" element={<UserOrderDetailPage />} />
           </Route>
 
           <Route
