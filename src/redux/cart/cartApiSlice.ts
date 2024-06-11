@@ -1,6 +1,6 @@
 import apiSlice from "../apiSlice.ts";
 import { TApiResponse } from "../../types/TApiResponse.ts";
-import { CART_TAG, PRODUCT_TAG } from "../../constants/TagTypes.ts";
+import { CART_TAG, PRODUCT_TAG } from "../tags.ts";
 import { CART_URL } from "../endpoints.ts";
 import { TCart, TCartItem } from "../../types/TCart.ts";
 

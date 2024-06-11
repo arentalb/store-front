@@ -6,7 +6,7 @@ import {
   PRODUCT_TAG,
   PROFILE_TAG,
   USER_TAG,
-} from "../constants/TagTypes.ts";
+} from "./tags.ts";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: import.meta.env.VITE_BASE_URL || "",

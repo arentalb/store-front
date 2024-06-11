@@ -3,7 +3,7 @@ import apiSlice from "../apiSlice.ts";
 import { TApiResponse } from "../../types/TApiResponse.ts";
 import { CATEGORY_URL } from "../endpoints.ts";
 import { TCategory } from "../../types/TCategory.ts";
-import { CATEGORY_TAG } from "../../constants/TagTypes.ts";
+import { CATEGORY_TAG } from "../tags.ts";
 
 const categoryApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

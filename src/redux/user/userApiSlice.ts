@@ -3,7 +3,7 @@ import { TApiResponse } from "../../types/TApiResponse.ts";
 import { USERS_URL } from "../endpoints.ts";
 import { TUser, TUserDetail } from "../../types/TUser.ts";
 import { TPassword } from "../../pages/SharedPages/ProfilePage.tsx";
-import { PROFILE_TAG } from "../../constants/TagTypes.ts";
+import { PROFILE_TAG } from "../tags.ts";
 
 const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

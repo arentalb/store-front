@@ -2,7 +2,7 @@ import apiSlice from "../apiSlice.ts";
 import { PRODUCT_URL } from "../endpoints.ts";
 import { TApiResponse } from "../../types/TApiResponse.ts";
 import { TProduct } from "../../types/TProduct.ts";
-import { PRODUCT_TAG } from "../../constants/TagTypes.ts";
+import { PRODUCT_TAG } from "../tags.ts";
 
 const productApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

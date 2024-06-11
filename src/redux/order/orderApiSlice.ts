@@ -2,7 +2,7 @@ import {ORDER_URL} from "../endpoints.ts";
 import apiSlice from "../apiSlice";
 import {TApiResponse} from "../../types/TApiResponse.ts";
 import {TOrder, TShippingAddress} from "../../types/TOrder.ts";
-import {CART_TAG, ORDER_TAG} from "../../constants/TagTypes.ts";
+import {CART_TAG, ORDER_TAG} from "../tags.ts";
 
 // src/redux/api/orderApiSlice.ts
 
