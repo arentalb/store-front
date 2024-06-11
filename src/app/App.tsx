@@ -16,6 +16,7 @@ import { AdminProductFormEditPage } from "../pages/AdminPages/product/AdminProdu
 import { UserProductsPage } from "../pages/UserPages/UserProductsPage.tsx";
 import { UserProductDetailPage } from "../pages/UserPages/UserProductDetailPage.tsx";
 import { UserCartPage } from "../pages/UserPages/UserCartPage.tsx";
+import { UserCheckoutPage } from "../pages/UserPages/UserCheckoutPage.tsx";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             <Route path="/products" element={<UserProductsPage />} />
             <Route path="/product/:id" element={<UserProductDetailPage />} />
             <Route path="/cart" element={<UserCartPage />} />
+            <Route path="/checkout" element={<UserCheckoutPage />} />
           </Route>
 
           <Route
