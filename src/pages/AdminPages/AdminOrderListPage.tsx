@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useGetOrdersQuery } from "../../redux/order/orderApiSlice.ts";
 import { TApiError } from "../../types/TApiError.ts";
 import { TOrder } from "../../types/TOrder.ts";
 import { Loader } from "../../components/common/Loader.tsx";
+import { OrderRow } from "../../components/admin/OrderRow";
 
 export function AdminOrderListPage() {
   const { data: ordersResponse, error, isLoading } = useGetOrdersQuery();
@@ -38,22 +38,7 @@ export function AdminOrderListPage() {
           </thead>
           <tbody>
             {orders?.map((order: TOrder, index: number) => (
-              <tr key={order._id}>
-                <th>{index + 1}</th>
-                <td>{order._id}</td>
-                <td>{order.user.email}</td>
-                <td>{order.totalPrice} IQD</td>
-                <td>{order.isPaid ? "Yes" : "No"}</td>
-                <td>{order.isDelivered ? "Yes" : "No"}</td>
-                <td>
-                  <Link
-                    to={`/admin/orders/${order._id}`}
-                    className="btn btn-primary"
-                  >
-                    Details
-                  </Link>
-                </td>
-              </tr>
+              <OrderRow key={order._id} order={order} index={index} />
             ))}
           </tbody>
         </table>
