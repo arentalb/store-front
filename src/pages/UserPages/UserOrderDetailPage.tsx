@@ -4,6 +4,8 @@ import { useGetUserOrderDetailQuery } from "../../redux/order/orderApiSlice.ts";
 import { TApiError } from "../../types/TApiError.ts";
 import { TOrder } from "../../types/TOrder.ts";
 import { Loader } from "../../components/common/Loader.tsx";
+import OrderDetailsTable from "../../components/user/OrderDetailsTable";
+import OrderItemsTable from "../../components/user/OrderItemsTable";
 
 export function UserOrderDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -24,61 +26,8 @@ export function UserOrderDetailPage() {
       {order && (
         <>
           <h2 className="text-2xl font-semibold mb-2">Order ID: {order._id}</h2>
-
-          <div className="overflow-x-auto mb-6">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Shipping Address</th>
-                  <th>Payment Method</th>
-                  <th>Paid</th>
-                  <th>Delivered</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr key={order._id}>
-                  <th>1</th>
-                  <td>
-                    {order.shippingAddress.houseNumber}{" "}
-                    {order.shippingAddress.streetNumber}{" "}
-                    {order.shippingAddress.neighborhood}{" "}
-                    {order.shippingAddress.city}
-                  </td>
-                  <td>{order.paymentMethod}</td>
-                  <td>{order.isPaid ? "Yes" : "No"}</td>
-                  <td>{order.isDelivered ? "Yes" : "No"}</td>
-                  <td>{order.totalPrice} IQD</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div className="overflow-x-auto mb-6">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Product</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {order.items.map((item, index) => (
-                  <tr key={item._id}>
-                    <th>{index + 1}</th>
-                    <td>{item.name}</td>
-                    <td>{item.quantity}</td>
-                    <td>{item.price} IQD</td>
-                    <td>{item.price * item.quantity} IQD</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <OrderDetailsTable order={order} />
+          <OrderItemsTable order={order} />
         </>
       )}
     </div>
