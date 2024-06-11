@@ -1,11 +1,14 @@
+import { useState } from "react";
 import { toast } from "react-toastify";
 import { useGetCategoriesQuery } from "../../../redux/category/categoryApiSlice.ts";
 import { useCreateProductMutation } from "../../../redux/product/productApiSlice.ts";
 import { useParams } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { TApiError } from "../../../types/TApiError.ts";
-import { useState } from "react";
 import { Loader } from "../../../components/common/Loader.tsx";
+import { FormInput } from "../../../components/admin/FormInput";
+import { FormSelect } from "../../../components/admin/FormSelect";
+import { ImagePreview } from "../../../components/admin/ImagePreview";
 
 interface IProductFormInputs {
   name: string;
@@ -62,14 +65,11 @@ export function AdminProductFormAddPage() {
     formData.append("stock", product.stock.toString());
     formData.append("coverImage", product.coverImage[0]);
     Array.from(product.images).forEach((image) => {
-      formData.append(`images`, image);
+      formData.append("images", image);
     });
     formData.append("tags", product.tags);
     formData.append("availableStock", product.stock.toString());
 
-    // for (const [key, value] of formData.entries()) {
-    //   console.log(`${key}:`, value);
-    // }
     try {
       await createProduct(formData).unwrap();
       toast.success("Product created successfully");
@@ -90,6 +90,7 @@ export function AdminProductFormAddPage() {
   if (isCategoryLoading) {
     return <Loader />;
   }
+
   const handleCoverImageChange = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -115,73 +116,44 @@ export function AdminProductFormAddPage() {
         {isEditMode ? "Edit Product" : "Create New Product"}
       </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-2">
-        <label className="form-control w-full sm:max-w-xs">
-          <div className="label">
-            <span className="label-text">Product name</span>
-          </div>
-          <input
-            type="text"
-            className="input input-bordered w-full sm:max-w-xs"
-            {...register("name", { required: "Product name is required" })}
-          />
-          {errors.name && <p className="text-red-500">{errors.name.message}</p>}
-        </label>
+        <FormInput
+          label="Product name"
+          type="text"
+          registration={register("name", {
+            required: "Product name is required",
+          })}
+          error={errors.name}
+        />
 
-        <label className="form-control w-full sm:max-w-xs">
-          <div className="label">
-            <span className="label-text">Product in stock</span>
-          </div>
-          <input
-            type="number"
-            className="input input-bordered w-full sm:max-w-xs"
-            {...register("stock", {
-              required: "Product in stock is required",
-            })}
-          />
-          {errors.stock && (
-            <p className="text-red-500">{errors.stock.message}</p>
-          )}
-        </label>
+        <FormInput
+          label="Product in stock"
+          type="number"
+          registration={register("stock", {
+            required: "Product in stock is required",
+          })}
+          error={errors.stock}
+        />
 
-        <label className="form-control w-full sm:max-w-xs">
-          <div className="label">
-            <span className="label-text">Product price</span>
-          </div>
-          <input
-            type="number"
-            step="0.01"
-            className="input input-bordered w-full sm:max-w-xs"
-            {...register("price", { required: "Product price is required" })}
-          />
-          {errors.price && (
-            <p className="text-red-500">{errors.price.message}</p>
-          )}
-        </label>
+        <FormInput
+          label="Product price"
+          type="number"
+          registration={register("price", {
+            required: "Product price is required",
+          })}
+          error={errors.price}
+        />
 
-        <label className="form-control w-full sm:max-w-xs">
-          <div className="label">
-            <span className="label-text">Product category</span>
-          </div>
-          <select
-            className="select select-bordered"
-            {...register("category", {
-              required: "Product category is required",
-            })}
-          >
-            <option disabled defaultChecked value="">
-              Pick one
-            </option>
-            {categories &&
-              categories.map((cat) => (
-                <option key={cat._id} value={cat.name}>
-                  {cat.name}
-                </option>
-              ))}
-          </select>
-          {errors.category && (
-            <p className="text-red-500">{errors.category.message}</p>
-          )}
-        </label>
+        <FormSelect
+          label="Product category"
+          registration={register("category", {
+            required: "Product category is required",
+          })}
+          options={
+            categories?.map((cat) => ({ value: cat.name, label: cat.name })) ||
+            []
+          }
+          error={errors.category}
+        />
 
         <label className="form-control sm:max-w-xs">
           <div className="label">
@@ -198,17 +170,14 @@ export function AdminProductFormAddPage() {
           )}
         </label>
 
-        <label className="form-control sm:max-w-xs">
-          <div className="label">
-            <span className="label-text">Product tags (comma separated)</span>
-          </div>
-          <input
-            type="text"
-            className="input input-bordered w-full sm:max-w-xs"
-            {...register("tags", { required: "Product tags are required" })}
-          />
-          {errors.tags && <p className="text-red-500">{errors.tags.message}</p>}
-        </label>
+        <FormInput
+          label="Product tags (comma separated)"
+          type="text"
+          registration={register("tags", {
+            required: "Product tags are required",
+          })}
+          error={errors.tags}
+        />
 
         <div>
           <label className="form-control w-full sm:max-w-xs mb-4">
@@ -229,13 +198,7 @@ export function AdminProductFormAddPage() {
               <p className="text-red-500">{errors.coverImage.message}</p>
             )}
           </label>
-          {coverImagePreview && (
-            <img
-              src={coverImagePreview}
-              alt="Cover Preview"
-              className="mt-4 h-40 w-40 object-cover"
-            />
-          )}
+          {coverImagePreview && <ImagePreview src={coverImagePreview} />}
         </div>
 
         <div>
@@ -258,12 +221,7 @@ export function AdminProductFormAddPage() {
           </label>
           <div className="mt-4 flex flex-wrap gap-4">
             {imagesPreview.map((src, index) => (
-              <img
-                key={index}
-                src={src}
-                alt={`Preview ${index + 1}`}
-                className="h-20 w-20 object-cover"
-              />
+              <ImagePreview key={index} src={src} />
             ))}
           </div>
         </div>
