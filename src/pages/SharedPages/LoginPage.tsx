@@ -7,6 +7,7 @@ import { useLoginMutation } from "../../redux/auth/authApiSlice.ts";
 import { setCredentials } from "../../redux/auth/authSlice.ts";
 import { RootState } from "../../redux/store.ts";
 import { TApiError } from "../../types/TApiError.ts";
+import { Loader } from "../../components/common/Loader.tsx";
 
 interface LoginFormInputs {
   email: string;
@@ -101,7 +102,7 @@ export function LoginPage() {
           disabled={isLoading}
           onClick={handleSubmit(onSubmit)}
         >
-          {isLoading ? "logging in ..." : "login"}
+          {isLoading ? <Loader /> : "login"}
         </button>
         <p className={"text-center text-sm"}>
           Don't have an account?{" "}

@@ -3,12 +3,13 @@ import { toast } from "react-toastify";
 import { useGetUserOrdersQuery } from "../../redux/order/orderApiSlice.ts";
 import { TApiError } from "../../types/TApiError.ts";
 import { TOrder } from "../../types/TOrder.ts";
+import { Loader } from "../../components/common/Loader.tsx";
 
 export function UserOrdersPage() {
   const { data, error, isLoading } = useGetUserOrdersQuery();
   const orders: TOrder[] | undefined = data?.data;
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loader />;
 
   if (error) {
     const apiError = error as TApiError;

@@ -12,6 +12,7 @@ import {
   useGetCartQuery,
   useUpdateCartItemMutation,
 } from "../../redux/cart/cartApiSlice";
+import { Loader } from "../../components/common/Loader.tsx";
 
 export function UserProductDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -66,11 +67,7 @@ export function UserProductDetailPage() {
   };
 
   if (isCartLoading) {
-    return (
-      <div className="flex justify-center items-center">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
+    return <Loader />;
   }
   if (isProductError) {
     const apiError = productError as TApiError;
@@ -103,9 +100,7 @@ export function UserProductDetailPage() {
   return (
     <div className="container mx-auto p-4">
       {isProductLoading ? (
-        <div className="flex justify-center items-center h-screen">
-          <span className="loading loading-spinner loading-lg"></span>
-        </div>
+        <Loader />
       ) : (
         product && (
           <div className="flex flex-col gap-8 md:flex-row">

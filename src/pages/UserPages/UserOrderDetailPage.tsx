@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { useGetUserOrderDetailQuery } from "../../redux/order/orderApiSlice.ts";
 import { TApiError } from "../../types/TApiError.ts";
 import { TOrder } from "../../types/TOrder.ts";
+import { Loader } from "../../components/common/Loader.tsx";
 
 export function UserOrderDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -10,7 +11,7 @@ export function UserOrderDetailPage() {
 
   const order: TOrder | undefined = data?.data;
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Loader />;
   if (error) {
     const apiError = error as TApiError;
     toast.error(apiError?.data?.message || "An error occurred");

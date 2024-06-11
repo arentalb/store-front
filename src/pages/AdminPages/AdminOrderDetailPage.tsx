@@ -5,6 +5,7 @@ import {
   useUpdateOrderStatusMutation,
 } from "../../redux/order/orderApiSlice";
 import { useParams } from "react-router-dom";
+import { Loader } from "../../components/common/Loader.tsx";
 
 export interface IOrderStatusUpdate {
   isDelivered?: boolean;
@@ -29,11 +30,7 @@ export function AdminOrderDetailPage() {
   };
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (error) {

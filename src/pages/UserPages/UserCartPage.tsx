@@ -9,6 +9,7 @@ import {
   useRemoveCartItemMutation,
   useUpdateCartItemMutation,
 } from "../../redux/cart/cartApiSlice.ts";
+import { Loader } from "../../components/common/Loader.tsx";
 
 export function UserCartPage() {
   const {
@@ -44,7 +45,7 @@ export function UserCartPage() {
     }
   };
 
-  if (isGettingCart) return <div>Loading...</div>;
+  if (isGettingCart) return <Loader />;
   if (getCartError) {
     const apiError = getCartError as TApiError;
     return <div>{apiError.data.message}</div>;

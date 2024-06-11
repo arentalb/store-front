@@ -2,6 +2,7 @@ import { useGetUsersQuery } from "../../redux/user/userApiSlice.ts";
 import { toast } from "react-toastify";
 import { TApiError } from "../../types/TApiError.ts";
 import { FiCheck, FiX } from "react-icons/fi";
+import { Loader } from "../../components/common/Loader.tsx";
 
 export function AdminUsersPage() {
   return (
@@ -27,11 +28,7 @@ export function UserList() {
   }
 
   if (isUsersLoading) {
-    return (
-      <div className="w-full flex justify-center items-center">
-        <span className="loading loading-spinner loading-md"></span>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (!usersResponse || !usersResponse.data) {

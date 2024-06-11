@@ -6,6 +6,7 @@ import { TApiError } from "../../types/TApiError";
 import { TShippingAddress } from "../../types/TOrder";
 import { useCreateUserOrderMutation } from "../../redux/order/orderApiSlice.ts";
 import { useGetCartQuery } from "../../redux/cart/cartApiSlice.ts";
+import { Loader } from "../../components/common/Loader.tsx";
 
 export function UserCheckoutPage() {
   const {
@@ -47,7 +48,7 @@ export function UserCheckoutPage() {
     }));
   };
 
-  if (isGettingCart) return <div>Loading...</div>;
+  if (isGettingCart) return <Loader />;
   if (getCartError) {
     const apiError = getCartError as TApiError;
     return <div>{apiError.data.message}</div>;
@@ -130,7 +131,7 @@ export function UserCheckoutPage() {
         className="btn btn-primary w-full"
         disabled={isCreatingOrder || !cart?.items.length}
       >
-        {isCreatingOrder ? "Placing Order..." : "Place Order"}
+        {isCreatingOrder ? <Loader /> : "Place Order"}
       </button>
     </div>
   );

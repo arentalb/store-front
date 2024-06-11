@@ -10,6 +10,7 @@ import {
 } from "../../../redux/product/productApiSlice.ts";
 import { TApiError } from "../../../types/TApiError.ts";
 import { FiX } from "react-icons/fi";
+import { Loader } from "../../../components/common/Loader.tsx";
 
 interface IProductFormInputs {
   name: string;
@@ -159,11 +160,7 @@ export function AdminProductFormEditPage() {
   }
 
   if (isCategoryLoading || isProductFetching) {
-    return (
-      <div className="flex justify-center items-center">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
+    return <Loader />;
   }
 
   const handleCoverImageChange = (
@@ -377,22 +374,14 @@ export function AdminProductFormEditPage() {
           onClick={handleSubmit(onEdit)}
           className={`btn btn-success w-full sm:max-w-xs`}
         >
-          {isUpdating ? (
-            <span className="loading loading-spinner"></span>
-          ) : (
-            "Update"
-          )}
+          {isUpdating ? <Loader /> : "Update"}
         </button>
         <button
           type="button"
           onClick={onDelete}
           className={`btn btn-error w-full sm:max-w-xs`}
         >
-          {isDeleting ? (
-            <span className="loading loading-spinner"></span>
-          ) : (
-            "Delete"
-          )}
+          {isDeleting ? <Loader /> : "Delete"}
         </button>
       </div>
     </form>

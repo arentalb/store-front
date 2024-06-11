@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { useGetOrdersQuery } from "../../redux/order/orderApiSlice.ts";
 import { TApiError } from "../../types/TApiError.ts";
 import { TOrder } from "../../types/TOrder.ts";
+import { Loader } from "../../components/common/Loader.tsx";
 
 export function AdminOrderListPage() {
   const { data: ordersResponse, error, isLoading } = useGetOrdersQuery();
@@ -10,11 +11,7 @@ export function AdminOrderListPage() {
   const orders = ordersResponse?.data;
 
   if (isLoading) {
-    return (
-      <div className="flex justify-center items-center">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (error) {

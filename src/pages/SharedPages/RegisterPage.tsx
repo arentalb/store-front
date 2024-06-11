@@ -5,7 +5,8 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import { useRegisterMutation } from "../../redux/auth/authApiSlice.ts";
 import { RootState } from "../../redux/store.ts";
-import { TApiError } from "../../types/TApiError.ts"; // Ensure this import path is correct
+import { TApiError } from "../../types/TApiError.ts";
+import { Loader } from "../../components/common/Loader.tsx"; // Ensure this import path is correct
 
 interface RegisterFormInputs {
   email: string;
@@ -123,7 +124,7 @@ export function RegisterPage() {
           disabled={isLoading}
           onClick={handleSubmit(onSubmit)}
         >
-          {isLoading ? "Registering" : "Register"}
+          {isLoading ? <Loader /> : "Register"}
         </button>
         <p className={"text-center text-sm"}>
           Already have an account?{" "}

@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { TApiError } from "../../types/TApiError.ts";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../redux/auth/authSlice.ts";
+import { Loader } from "../../components/common/Loader.tsx";
 
 export interface TProfile {
   username: string;
@@ -78,7 +79,7 @@ export function ProfilePage() {
   };
 
   if (profileLoading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   if (profileError) {
@@ -149,7 +150,7 @@ export function ProfilePage() {
               disabled={updateProfileLoading}
               type="submit"
             >
-              {updateProfileLoading ? "Updating" : "Update"}
+              {updateProfileLoading ? <Loader /> : "Update"}
             </button>
           </form>
 
@@ -216,7 +217,7 @@ export function ProfilePage() {
               disabled={changePasswordLoading}
               type="submit"
             >
-              {changePasswordLoading ? "Changing" : "Change Password"}
+              {changePasswordLoading ? <Loader /> : "Change Password"}
             </button>
           </form>
         </div>

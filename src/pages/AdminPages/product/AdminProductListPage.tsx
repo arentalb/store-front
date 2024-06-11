@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { TApiError } from "../../../types/TApiError.ts";
 import { toast } from "react-toastify";
 import moment from "moment/moment";
+import { Loader } from "../../../components/common/Loader.tsx";
 
 export function AdminProductListPage() {
   const {
@@ -37,9 +38,7 @@ export function AdminProductListPage() {
         </button>
       </div>
       {isProductsLoading ? (
-        <div className="flex justify-center items-center">
-          <span className="loading loading-spinner loading-lg"></span>
-        </div>
+        <Loader />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {products?.map((product) => (

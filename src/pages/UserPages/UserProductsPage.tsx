@@ -2,6 +2,7 @@ import { TProduct } from "../../types/TProduct.ts";
 import { Link, useLocation } from "react-router-dom";
 import { TApiError } from "../../types/TApiError.ts";
 import { useGetProductsQuery } from "../../redux/product/productApiSlice.ts";
+import { Loader } from "../../components/common/Loader.tsx";
 
 export function UserProductsPage() {
   const location = useLocation();
@@ -15,9 +16,7 @@ export function UserProductsPage() {
   return (
     <>
       {isLoading ? (
-        <div className="flex justify-center items-center">
-          <span className="loading loading-spinner loading-lg"></span>
-        </div>
+        <Loader />
       ) : (
         <>
           {isError ? (

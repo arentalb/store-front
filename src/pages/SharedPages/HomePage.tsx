@@ -5,6 +5,7 @@ import { TProduct } from "../../types/TProduct.ts";
 import { TApiError } from "../../types/TApiError.ts";
 import { useGetCategoriesQuery } from "../../redux/category/categoryApiSlice.ts";
 import { TCategory } from "../../types/TCategory.ts";
+import { Loader } from "../../components/common/Loader.tsx";
 
 export function HomePage() {
   const {
@@ -54,9 +55,7 @@ export function HomePage() {
         </div>
       </div>
       {categoriesIsLoading || newProductsIsLoading ? (
-        <div className="flex justify-center items-center">
-          <span className="loading loading-spinner loading-lg"></span>
-        </div>
+        <Loader />
       ) : (
         <>
           <h1 className="text-2xl mb-8">NEW PRODUCTS</h1>

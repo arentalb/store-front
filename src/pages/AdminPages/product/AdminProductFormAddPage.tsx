@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { TApiError } from "../../../types/TApiError.ts";
 import { useState } from "react";
+import { Loader } from "../../../components/common/Loader.tsx";
 
 interface IProductFormInputs {
   name: string;
@@ -87,11 +88,7 @@ export function AdminProductFormAddPage() {
   }
 
   if (isCategoryLoading) {
-    return (
-      <div className="flex justify-center items-center">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
+    return <Loader />;
   }
   const handleCoverImageChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -278,11 +275,7 @@ export function AdminProductFormAddPage() {
           onClick={handleSubmit(onCreate)}
           className={`btn btn-active btn-neutral w-full sm:max-w-xs`}
         >
-          {isCreating ? (
-            <span className="loading loading-spinner"></span>
-          ) : (
-            "Create"
-          )}
+          {isCreating ? <Loader /> : "Create"}
         </button>
       </div>
     </form>

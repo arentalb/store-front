@@ -8,6 +8,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { TApiError } from "../../types/TApiError.ts";
 import { TCategory } from "../../types/TCategory.ts";
+import { Loader } from "../../components/common/Loader.tsx";
 
 export function AdminCategoryPage() {
   const {
@@ -105,11 +106,7 @@ export function AdminCategoryPage() {
               disabled={isCreating || categoryName === ""}
               onClick={createHandler}
             >
-              {isCreating ? (
-                <span className="loading loading-spinner"></span>
-              ) : (
-                "Create new"
-              )}
+              {isCreating ? <Loader /> : "Create new"}
             </button>
           </div>
         </form>
@@ -150,11 +147,7 @@ export function AdminCategoryPage() {
               disabled={isUpdating || selectedCategory.name === ""}
               onClick={updateHandler}
             >
-              {isUpdating ? (
-                <span className="loading loading-spinner"></span>
-              ) : (
-                "Update"
-              )}
+              {isUpdating ? <Loader /> : "Update"}
             </button>
             <button
               className="btn btn-error"
@@ -162,11 +155,7 @@ export function AdminCategoryPage() {
               disabled={isDeleting || selectedCategory.name === ""}
               onClick={() => deleteHandler(selectedCategory._id)}
             >
-              {isDeleting ? (
-                <span className="loading loading-spinner"></span>
-              ) : (
-                "Delete"
-              )}
+              {isDeleting ? <Loader /> : "Delete"}
             </button>
           </div>
         )}
