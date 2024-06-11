@@ -1,8 +1,10 @@
+import { TCategory } from "./TCategory.ts";
+
 export interface TProduct {
   _id: string;
   name: string;
   description: string;
-  category: string;
+  category: TCategory;
   coverImage: string;
   images: Array<string>;
   stock: number;

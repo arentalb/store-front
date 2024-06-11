@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api/": "http://localhost:6060",
-      "/public/images/": "http://localhost:6060",
+      "/public/images": "http://localhost:6060",
     },
   },
 });

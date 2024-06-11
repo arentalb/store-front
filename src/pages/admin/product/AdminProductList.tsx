@@ -49,7 +49,7 @@ export function AdminProductList() {
             >
               <div className="md:w-1/3 xl:w-1/4">
                 <img
-                  src={`/${product.coverImage}`}
+                  src={product.coverImage}
                   alt={product.name}
                   className="object-cover h-28 md:h-full w-full rounded"
                 />

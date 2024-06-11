@@ -32,7 +32,7 @@ const productApiSlice = apiSlice.injectEndpoints({
     }),
     updateProduct: builder.mutation<
       TApiResponse<TProduct>,
-      { product: Partial<TProduct>; id: string }
+      { product: FormData; id: string }
     >({
       query: ({ product, id }) => ({
         url: `${PRODUCT_URL}/${id}`,
