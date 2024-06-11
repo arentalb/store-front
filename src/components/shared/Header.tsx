@@ -12,9 +12,9 @@ import {
 } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { useLogoutMutation } from "../redux/feature/auth/authApiSlice.ts";
-import { getUser, logOut } from "../redux/feature/auth/authSlice.ts";
-import { TApiError } from "../redux/types/TApiError.ts";
+import { useLogoutMutation } from "../../redux/auth/authApiSlice.ts";
+import { getUser, logOut } from "../../redux/auth/authSlice.ts";
+import { TApiError } from "../../types/TApiError.ts";
 
 export function Header() {
   const user = useSelector(getUser);

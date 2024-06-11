@@ -1,9 +1,9 @@
 import { toast } from "react-toastify";
-import { useGetCategoriesQuery } from "../../../redux/feature/categoryApiSlice.ts";
-import { useCreateProductMutation } from "../../../redux/feature/productApiSlice.ts";
+import { useGetCategoriesQuery } from "../../../redux/category/categoryApiSlice.ts";
+import { useCreateProductMutation } from "../../../redux/product/productApiSlice.ts";
 import { useParams } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { TApiError } from "../../../redux/types/TApiError.ts";
+import { TApiError } from "../../../types/TApiError.ts";
 import { useState } from "react";
 
 interface IProductFormInputs {
@@ -17,7 +17,7 @@ interface IProductFormInputs {
   tags: string;
 }
 
-export function AdminProductFormAdd() {
+export function AdminProductFormAddPage() {
   const { id } = useParams();
   const isEditMode = Boolean(id);
 

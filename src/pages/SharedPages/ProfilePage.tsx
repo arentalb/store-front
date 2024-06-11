@@ -2,13 +2,13 @@ import {
   useChangePasswordMutation,
   useGetProfileQuery,
   useUpdateProfileMutation,
-} from "../redux/feature/userApiSlice.ts";
+} from "../../redux/user/userApiSlice.ts";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
-import { TApiError } from "../redux/types/TApiError.ts";
+import { TApiError } from "../../types/TApiError.ts";
 import { useDispatch } from "react-redux";
-import { setCredentials } from "../redux/feature/auth/authSlice.ts";
+import { setCredentials } from "../../redux/auth/authSlice.ts";
 
 export interface TProfile {
   username: string;

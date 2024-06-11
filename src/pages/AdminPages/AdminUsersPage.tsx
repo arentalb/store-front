@@ -1,6 +1,6 @@
-import { useGetUsersQuery } from "../../redux/feature/userApiSlice.ts";
+import { useGetUsersQuery } from "../../redux/user/userApiSlice.ts";
 import { toast } from "react-toastify";
-import { TApiError } from "../../redux/types/TApiError.ts";
+import { TApiError } from "../../types/TApiError.ts";
 import { FiCheck, FiX } from "react-icons/fi";
 
 export function AdminUsersPage() {

@@ -1,8 +1,8 @@
 import apiSlice from "../apiSlice.ts";
-import { TApiResponse } from "../types/TApiResponse.ts";
+import { TApiResponse } from "../../types/TApiResponse.ts";
 import { USERS_URL } from "../endpoints.ts";
-import { TUser, TUserDetail } from "../types/TUser.ts";
-import { TPassword } from "../../pages/ProfilePage.tsx";
+import { TUser, TUserDetail } from "../../types/TUser.ts";
+import { TPassword } from "../../pages/SharedPages/ProfilePage.tsx";
 
 const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

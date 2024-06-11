@@ -1,7 +1,7 @@
-import apiSlice from "../apiSlice";
-import { PRODUCT_URL } from "../endpoints";
-import { TApiResponse } from "../types/TApiResponse.ts";
-import { TProduct } from "../types/TProduct.ts";
+import apiSlice from "../apiSlice.ts";
+import { PRODUCT_URL } from "../endpoints.ts";
+import { TApiResponse } from "../../types/TApiResponse.ts";
+import { TProduct } from "../../types/TProduct.ts";
 
 const productApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({

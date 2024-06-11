@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useGetNewProductsQuery } from "../redux/feature/productApiSlice.ts";
-import { TProduct } from "../redux/types/TProduct.ts";
-import { TApiError } from "../redux/types/TApiError.ts";
-import { useGetCategoriesQuery } from "../redux/feature/categoryApiSlice.ts";
-import { TCategory } from "../redux/types/TCategory.ts";
+import { useGetNewProductsQuery } from "../../redux/product/productApiSlice.ts";
+import { TProduct } from "../../types/TProduct.ts";
+import { TApiError } from "../../types/TApiError.ts";
+import { useGetCategoriesQuery } from "../../redux/category/categoryApiSlice.ts";
+import { TCategory } from "../../types/TCategory.ts";
 
 export function HomePage() {
   const {

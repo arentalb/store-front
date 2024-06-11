@@ -2,13 +2,13 @@ import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
-import { useGetCategoriesQuery } from "../../../redux/feature/categoryApiSlice.ts";
+import { useGetCategoriesQuery } from "../../../redux/category/categoryApiSlice.ts";
 import {
   useDeleteProductMutation,
   useGetProductByIdQuery,
   useUpdateProductMutation,
-} from "../../../redux/feature/productApiSlice.ts";
-import { TApiError } from "../../../redux/types/TApiError.ts";
+} from "../../../redux/product/productApiSlice.ts";
+import { TApiError } from "../../../types/TApiError.ts";
 import { FiX } from "react-icons/fi";
 
 interface IProductFormInputs {
@@ -22,7 +22,7 @@ interface IProductFormInputs {
   tags: string;
 }
 
-export function AdminProductFormEdit() {
+export function AdminProductFormEditPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const {

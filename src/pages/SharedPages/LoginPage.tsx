@@ -1,31 +1,31 @@
 import { Link, useNavigate } from "react-router-dom";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
 import { useEffect } from "react";
-import { useRegisterMutation } from "../redux/feature/auth/authApiSlice.ts";
-import { RootState } from "../redux/store.ts";
-import { TApiError } from "../redux/types/TApiError.ts"; // Ensure this import path is correct
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useLoginMutation } from "../../redux/auth/authApiSlice.ts";
+import { setCredentials } from "../../redux/auth/authSlice.ts";
+import { RootState } from "../../redux/store.ts";
+import { TApiError } from "../../types/TApiError.ts";
 
-interface RegisterFormInputs {
+interface LoginFormInputs {
   email: string;
-  username: string;
   password: string;
 }
 
-export function RegisterPage() {
+export function LoginPage() {
   const navigate = useNavigate();
 
+  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
 
-  const [registerMutation, { isLoading }] = useRegisterMutation();
+  const [login, { isLoading }] = useLoginMutation();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
-  } = useForm<RegisterFormInputs>();
+  } = useForm<LoginFormInputs>();
 
   useEffect(() => {
     if (user) {
@@ -33,12 +33,10 @@ export function RegisterPage() {
     }
   }, [navigate, user]);
 
-  const onSubmit: SubmitHandler<RegisterFormInputs> = async (newUser) => {
+  const onSubmit: SubmitHandler<LoginFormInputs> = async (credential) => {
     try {
-      await registerMutation(newUser).unwrap();
-      toast.success("User registered");
-      navigate("/login");
-      reset();
+      const res = await login(credential).unwrap();
+      dispatch(setCredentials({ ...res.data }));
     } catch (error) {
       const apiError = error as TApiError;
       toast.error(apiError.data.message);
@@ -47,9 +45,9 @@ export function RegisterPage() {
 
   return (
     <div className={"py-20"}>
-      <h1 className={"text-2xl font-bold mb-8"}>Register form</h1>
+      <h1 className={"text-3xl font-bold mb-8"}>Login form</h1>
 
-      <div className={"max-w-md flex flex-col gap-4"}>
+      <form className={"max-w-md flex flex-col gap-6"}>
         <div>
           <label className="input input-bordered flex items-center gap-2">
             <svg
@@ -62,35 +60,14 @@ export function RegisterPage() {
               <path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" />
             </svg>
             <input
-              type="text"
+              type="email"
               className="grow"
               placeholder="Email"
               {...register("email", { required: true })}
             />
           </label>
           {errors.email && (
-            <span className={"text-error text-sm"}>This field is required</span>
-          )}
-        </div>
-        <div>
-          <label className="input input-bordered flex items-center gap-2">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 16 16"
-              fill="currentColor"
-              className="w-4 h-4 opacity-70"
-            >
-              <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM12.735 14c.618 0 1.093-.561.872-1.139a6.002 6.002 0 0 0-11.215 0c-.22.578.254 1.139.872 1.139h9.47Z" />
-            </svg>
-            <input
-              type="text"
-              className="grow"
-              placeholder="Username"
-              {...register("username", { required: true })}
-            />
-          </label>
-          {errors.username && (
-            <span className={"text-error text-sm"}>This field is required</span>
+            <span className={"text-error text-sm"}>Email is required</span>
           )}
         </div>
         <div>
@@ -109,29 +86,30 @@ export function RegisterPage() {
             </svg>
             <input
               type="password"
-              className="grow"
               placeholder="password"
+              className="grow"
               {...register("password", { required: true })}
             />
           </label>
           {errors.password && (
-            <span className={"text-error text-sm"}>This field is required</span>
+            <span className={"text-error text-sm"}>Password is required</span>
           )}
         </div>
         <button
+          type={"button"}
           className="btn btn-neutral"
           disabled={isLoading}
           onClick={handleSubmit(onSubmit)}
         >
-          {isLoading ? "Registering" : "Register"}
+          {isLoading ? "logging in ..." : "login"}
         </button>
         <p className={"text-center text-sm"}>
-          Already have an account?{" "}
-          <Link className={"text-info hover:underline"} to={"/login"}>
-            Login
+          Don't have an account?{" "}
+          <Link className={"text-info hover:underline"} to={"/register"}>
+            Register
           </Link>
         </p>
-      </div>
+      </form>
     </div>
   );
 }

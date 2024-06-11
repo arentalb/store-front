@@ -1,10 +1,10 @@
-import { useGetProductsQuery } from "../../../redux/feature/productApiSlice.ts";
+import { useGetProductsQuery } from "../../../redux/product/productApiSlice.ts";
 import { useNavigate } from "react-router-dom";
-import { TApiError } from "../../../redux/types/TApiError.ts";
+import { TApiError } from "../../../types/TApiError.ts";
 import { toast } from "react-toastify";
 import moment from "moment/moment";
 
-export function AdminProductList() {
+export function AdminProductListPage() {
   const {
     data: productsResponse,
     isLoading: isProductsLoading,

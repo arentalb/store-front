@@ -1,5 +1,5 @@
-import { AUTH_URL } from "../../endpoints.ts";
-import apiSlice from "../../apiSlice.ts";
+import { AUTH_URL } from "../endpoints.ts";
+import apiSlice from "../apiSlice.ts";
 import { TApiResponse } from "../../types/TApiResponse.ts";
 
 interface LoginRequest {
