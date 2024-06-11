@@ -37,7 +37,7 @@ const cartApiSlice = apiSlice.injectEndpoints({
     }),
     removeCartItem: builder.mutation<TApiResponse<void>, string>({
       query: (productId) => ({
-        url: `${CART_URL}`,
+        url: `${CART_URL}/item`,
         method: "DELETE",
         body: { productId },
       }),

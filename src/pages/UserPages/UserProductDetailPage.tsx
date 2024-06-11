@@ -23,11 +23,7 @@ export function UserProductDetailPage() {
   } = useGetProductByIdQuery(id!);
   const product = productData?.data;
 
-  const {
-    data: cartData,
-    error: cartError,
-    isLoading: isCartLoading,
-  } = useGetCartQuery();
+  const { data: cartData, isLoading: isCartLoading } = useGetCartQuery();
   const [addToCart, { error: addToCartError }] = useAddToCartMutation();
   const [updateCartItem, { error: updateCartError }] =
     useUpdateCartItemMutation();
@@ -88,14 +84,6 @@ export function UserProductDetailPage() {
 
   if (addToCartError) {
     const apiError = addToCartError as TApiError;
-    return (
-      <div className="text-center text-red-500">
-        Error: {apiError?.data?.message}
-      </div>
-    );
-  }
-  if (cartError) {
-    const apiError = cartError as TApiError;
     return (
       <div className="text-center text-red-500">
         Error: {apiError?.data?.message}

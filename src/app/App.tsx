@@ -15,6 +15,7 @@ import { AdminProductFormAddPage } from "../pages/AdminPages/product/AdminProduc
 import { AdminProductFormEditPage } from "../pages/AdminPages/product/AdminProductFormEditPage.tsx";
 import { UserProductsPage } from "../pages/UserPages/UserProductsPage.tsx";
 import { UserProductDetailPage } from "../pages/UserPages/UserProductDetailPage.tsx";
+import { UserCartPage } from "../pages/UserPages/UserCartPage.tsx";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route element={<PrivateRoute roles={["User"]} />}>
             <Route path="/products" element={<UserProductsPage />} />
             <Route path="/product/:id" element={<UserProductDetailPage />} />
+            <Route path="/cart" element={<UserCartPage />} />
           </Route>
 
           <Route
