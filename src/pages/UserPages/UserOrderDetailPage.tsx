@@ -4,8 +4,8 @@ import { useGetUserOrderDetailQuery } from "../../redux/order/orderApiSlice.ts";
 import { TApiError } from "../../types/TApiError.ts";
 import { TOrder } from "../../types/TOrder.ts";
 import { Loader } from "../../components/common/Loader.tsx";
-import OrderDetailsTable from "../../components/user/OrderDetailsTable";
-import OrderItemsTable from "../../components/user/OrderItemsTable";
+import { OrderDetailsTable } from "../../components/user/OrderDetailsTable.tsx";
+import { OrderItemsTable } from "../../components/user/OrderItemsTable.tsx";
 
 export function UserOrderDetailPage() {
   const { id } = useParams<{ id: string }>();

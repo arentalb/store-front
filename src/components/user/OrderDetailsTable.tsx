@@ -4,7 +4,7 @@ interface OrderDetailsTableProps {
   order: TOrder;
 }
 
-function OrderDetailsTable({ order }: OrderDetailsTableProps) {
+export function OrderDetailsTable({ order }: OrderDetailsTableProps) {
   return (
     <div className="overflow-x-auto mb-6">
       <table className="table">
@@ -36,5 +36,3 @@ function OrderDetailsTable({ order }: OrderDetailsTableProps) {
     </div>
   );
 }
-
-export default OrderDetailsTable;
