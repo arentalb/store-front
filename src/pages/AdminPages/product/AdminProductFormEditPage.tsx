@@ -1,3 +1,5 @@
+// src/pages/AdminPages/AdminProductFormEditPage.tsx
+
 import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -9,8 +11,11 @@ import {
   useUpdateProductMutation,
 } from "../../../redux/product/productApiSlice.ts";
 import { TApiError } from "../../../types/TApiError.ts";
-import { FiX } from "react-icons/fi";
 import { Loader } from "../../../components/common/Loader.tsx";
+import { FormInput } from "../../../components/admin/FormInput";
+import { FormSelect } from "../../../components/admin/FormSelect";
+import { ImagePreview } from "../../../components/admin/ImagePreview";
+import { FiX } from "react-icons/fi";
 
 interface IProductFormInputs {
   name: string;
@@ -123,9 +128,6 @@ export function AdminProductFormEditPage() {
     });
 
     if (id) {
-      // for (const [key, value] of formData.entries()) {
-      //   console.log(`${key}:`, value);
-      // }
       try {
         await updateProduct({ product: formData, id }).unwrap();
         toast.success("Product updated successfully");
@@ -198,17 +200,14 @@ export function AdminProductFormEditPage() {
     <form>
       <h1 className="text-2xl mb-4">Edit Product</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-2">
-        <label className="form-control w-full sm:max-w-xs">
-          <div className="label">
-            <span className="label-text">Product name</span>
-          </div>
-          <input
-            type="text"
-            className="input input-bordered w-full sm:max-w-xs"
-            {...register("name", { required: "Product name is required" })}
-          />
-          {errors.name && <p className="text-red-500">{errors.name.message}</p>}
-        </label>
+        <FormInput
+          label="Product name"
+          type="text"
+          registration={register("name", {
+            required: "Product name is required",
+          })}
+          error={errors.name}
+        />
 
         <label className="form-control w-full sm:max-w-xs">
           <div className="label">
@@ -225,73 +224,44 @@ export function AdminProductFormEditPage() {
           )}
         </label>
 
-        <label className="form-control w-full sm:max-w-xs">
-          <div className="label">
-            <span className="label-text">Product category</span>
-          </div>
-          <select
-            className="select select-bordered"
-            {...register("category", {
-              required: "Product category is required",
-            })}
-          >
-            <option disabled defaultChecked value="">
-              Pick one
-            </option>
-            {categories &&
-              categories.map((cat) => (
-                <option key={cat._id} value={cat.name}>
-                  {cat.name}
-                </option>
-              ))}
-          </select>
-          {errors.category && (
-            <p className="text-red-500">{errors.category.message}</p>
-          )}
-        </label>
+        <FormSelect
+          label="Product category"
+          registration={register("category", {
+            required: "Product category is required",
+          })}
+          options={
+            categories?.map((cat) => ({ value: cat.name, label: cat.name })) ||
+            []
+          }
+          error={errors.category}
+        />
 
-        <label className="form-control w-full sm:max-w-xs">
-          <div className="label">
-            <span className="label-text">Product price</span>
-          </div>
-          <input
-            type="number"
-            step="0.01"
-            className="input input-bordered w-full sm:max-w-xs"
-            {...register("price", { required: "Product price is required" })}
-          />
-          {errors.price && (
-            <p className="text-red-500">{errors.price.message}</p>
-          )}
-        </label>
+        <FormInput
+          label="Product price"
+          type="number"
+          registration={register("price", {
+            required: "Product price is required",
+          })}
+          error={errors.price}
+        />
 
-        <label className="form-control w-full sm:max-w-xs">
-          <div className="label">
-            <span className="label-text">Product stock</span>
-          </div>
-          <input
-            type="number"
-            className="input input-bordered w-full sm:max-w-xs"
-            {...register("stock", {
-              required: "Product stock is required",
-            })}
-          />
-          {errors.stock && (
-            <p className="text-red-500">{errors.stock.message}</p>
-          )}
-        </label>
+        <FormInput
+          label="Product stock"
+          type="number"
+          registration={register("stock", {
+            required: "Product stock is required",
+          })}
+          error={errors.stock}
+        />
 
-        <label className="form-control w-full sm:max-w-xs">
-          <div className="label">
-            <span className="label-text">Product tags (comma separated)</span>
-          </div>
-          <input
-            type="text"
-            className="input input-bordered w-full sm:max-w-xs"
-            {...register("tags", { required: "Product tags are required" })}
-          />
-          {errors.tags && <p className="text-red-500">{errors.tags.message}</p>}
-        </label>
+        <FormInput
+          label="Product tags (comma separated)"
+          type="text"
+          registration={register("tags", {
+            required: "Product tags are required",
+          })}
+          error={errors.tags}
+        />
 
         <div>
           <label className="form-control w-full sm:max-w-xs mb-4">
@@ -301,9 +271,7 @@ export function AdminProductFormEditPage() {
             <input
               type="file"
               className="file-input file-input-bordered w-full sm:max-w-xs"
-              {...register("coverImage", {
-                required: false,
-              })}
+              {...register("coverImage", { required: false })}
               onChange={handleCoverImageChange}
             />
             {errors.coverImage && (
@@ -337,9 +305,7 @@ export function AdminProductFormEditPage() {
               type="file"
               multiple
               className="file-input file-input-bordered w-full sm:max-w-xs"
-              {...register("images", {
-                required: false,
-              })}
+              {...register("images", { required: false })}
               onChange={handleImagesChange}
             />
             {errors.images && (
@@ -348,21 +314,11 @@ export function AdminProductFormEditPage() {
           </label>
           <div className="mt-4 flex flex-wrap gap-4">
             {imagesPreview.map((src, index) => (
-              <div key={index} className="relative h-20 w-20">
-                <img
-                  src={src}
-                  alt={`Preview ${index + 1}`}
-                  className="h-full w-full object-cover"
-                />
-
-                <button
-                  type="button"
-                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
-                  onClick={() => handleRemoveImage(src)}
-                >
-                  <FiX />
-                </button>
-              </div>
+              <ImagePreview
+                key={index}
+                src={src}
+                onRemove={() => handleRemoveImage(src)}
+              />
             ))}
           </div>
         </div>
@@ -372,14 +328,14 @@ export function AdminProductFormEditPage() {
         <button
           type="button"
           onClick={handleSubmit(onEdit)}
-          className={`btn btn-success w-full sm:max-w-xs`}
+          className="btn btn-success w-full sm:max-w-xs"
         >
           {isUpdating ? <Loader /> : "Update"}
         </button>
         <button
           type="button"
           onClick={onDelete}
-          className={`btn btn-error w-full sm:max-w-xs`}
+          className="btn btn-error w-full sm:max-w-xs"
         >
           {isDeleting ? <Loader /> : "Delete"}
         </button>
