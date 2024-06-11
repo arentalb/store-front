@@ -7,6 +7,8 @@ import { TShippingAddress } from "../../types/TOrder";
 import { useCreateUserOrderMutation } from "../../redux/order/orderApiSlice.ts";
 import { useGetCartQuery } from "../../redux/cart/cartApiSlice.ts";
 import { Loader } from "../../components/common/Loader.tsx";
+import { InputField } from "../../components/common/InputField";
+import { OrderSummary } from "../../components/user/OrderSummary";
 
 export function UserCheckoutPage() {
   const {
@@ -57,75 +59,31 @@ export function UserCheckoutPage() {
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">Checkout</h1>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
-          City
-        </label>
-        <input
-          type="text"
-          name="city"
-          className="input input-bordered w-full"
-          value={shippingAddress.city}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
-          Neighborhood
-        </label>
-        <input
-          type="text"
-          name="neighborhood"
-          className="input input-bordered w-full"
-          value={shippingAddress.neighborhood}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
-          Street Number
-        </label>
-        <input
-          type="text"
-          name="streetNumber"
-          className="input input-bordered w-full"
-          value={shippingAddress.streetNumber}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
-          House Number
-        </label>
-        <input
-          type="text"
-          name="houseNumber"
-          className="input input-bordered w-full"
-          value={shippingAddress.houseNumber}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div className="mb-6">
-        <h2 className="text-2xl font-semibold mb-2">Order Summary</h2>
-        {cart?.items.map((item) => (
-          <div key={item.product} className="flex justify-between mb-2">
-            <div>{item.name}</div>
-            <div>
-              {item.quantity} x {item.price} IQD
-            </div>
-          </div>
-        ))}
-        <div className="flex justify-between font-bold">
-          <div>Total</div>
-          <div>
-            {cart?.items.reduce(
-              (acc, item) => acc + item.price * item.quantity,
-              0,
-            )}{" "}
-            IQD
-          </div>
-        </div>
-      </div>
+      <InputField
+        label="City"
+        name="city"
+        value={shippingAddress.city}
+        onChange={handleInputChange}
+      />
+      <InputField
+        label="Neighborhood"
+        name="neighborhood"
+        value={shippingAddress.neighborhood}
+        onChange={handleInputChange}
+      />
+      <InputField
+        label="Street Number"
+        name="streetNumber"
+        value={shippingAddress.streetNumber}
+        onChange={handleInputChange}
+      />
+      <InputField
+        label="House Number"
+        name="houseNumber"
+        value={shippingAddress.houseNumber}
+        onChange={handleInputChange}
+      />
+      <OrderSummary cart={cart} />
       <button
         onClick={handleCheckout}
         className="btn btn-primary w-full"
