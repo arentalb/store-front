@@ -3,6 +3,7 @@ import apiSlice from "../apiSlice.ts";
 import { TApiResponse } from "../../types/TApiResponse.ts";
 import { CATEGORY_URL } from "../endpoints.ts";
 import { TCategory } from "../../types/TCategory.ts";
+import { CATEGORY_TAG } from "../../constants/TagTypes.ts";
 
 const categoryApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -11,6 +12,7 @@ const categoryApiSlice = apiSlice.injectEndpoints({
         url: `${CATEGORY_URL}/`,
         method: "GET",
       }),
+      providesTags: [CATEGORY_TAG],
     }),
     createCategory: builder.mutation<
       TApiResponse<TCategory>,
@@ -21,6 +23,7 @@ const categoryApiSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: category,
       }),
+      invalidatesTags: [CATEGORY_TAG],
     }),
     updateCategory: builder.mutation<
       TApiResponse<TCategory>,
@@ -31,12 +34,14 @@ const categoryApiSlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: { name },
       }),
+      invalidatesTags: [CATEGORY_TAG],
     }),
     deleteCategory: builder.mutation<TApiResponse<null>, string>({
       query: (id) => ({
         url: `${CATEGORY_URL}/${id}`,
         method: "DELETE",
       }),
+      invalidatesTags: [CATEGORY_TAG],
     }),
   }),
   overrideExisting: false,

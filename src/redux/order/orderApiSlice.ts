@@ -2,6 +2,7 @@ import {ORDER_URL} from "../endpoints.ts";
 import apiSlice from "../apiSlice";
 import {TApiResponse} from "../../types/TApiResponse.ts";
 import {TOrder, TShippingAddress} from "../../types/TOrder.ts";
+import {ORDER_TAG} from "../../constants/TagTypes.ts";
 
 // src/redux/api/orderApiSlice.ts
 
@@ -13,12 +14,14 @@ const orderApiSlice = apiSlice.injectEndpoints({
         url: `${ORDER_URL}/all`,
         method: "GET",
       }),
+      providesTags: [ORDER_TAG],
     }),
     getOrderDetail: builder.query<TApiResponse<TOrder>, string>({
       query: (id) => ({
         url: `${ORDER_URL}/detail/${id}`,
         method: "GET",
       }),
+      providesTags: [ORDER_TAG],
     }),
     updateOrderStatus: builder.mutation<
       void,
@@ -29,6 +32,7 @@ const orderApiSlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: updateData,
       }),
+      invalidatesTags: [ORDER_TAG],
     }),
     // user section
     getUserOrders: builder.query<TApiResponse<TOrder[]>, void>({

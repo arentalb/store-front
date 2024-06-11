@@ -3,6 +3,7 @@ import { TApiResponse } from "../../types/TApiResponse.ts";
 import { USERS_URL } from "../endpoints.ts";
 import { TUser, TUserDetail } from "../../types/TUser.ts";
 import { TPassword } from "../../pages/SharedPages/ProfilePage.tsx";
+import { PROFILE_TAG } from "../../constants/TagTypes.ts";
 
 const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -11,6 +12,7 @@ const userApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}/me`,
         method: "GET",
       }),
+      providesTags: [PROFILE_TAG],
     }),
     updateProfile: builder.mutation<TApiResponse<TUser>, Partial<TUser>>({
       query: (data) => ({
@@ -18,6 +20,7 @@ const userApiSlice = apiSlice.injectEndpoints({
         method: "PUT",
         body: data,
       }),
+      invalidatesTags: [PROFILE_TAG],
     }),
     changePassword: builder.mutation<string, TPassword>({
       query: (data) => ({
@@ -31,14 +34,12 @@ const userApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}/admin`,
         method: "GET",
       }),
-      keepUnusedDataFor: 5,
     }),
     getUserDetail: builder.query<TApiResponse<TUser>, string>({
       query: (id) => ({
         url: `${USERS_URL}/${id}`,
         method: "GET",
       }),
-      keepUnusedDataFor: 5,
     }),
     updateUser: builder.mutation<
       TApiResponse<TUser>,
