@@ -6,6 +6,9 @@ import {
 } from "../../redux/order/orderApiSlice";
 import { useParams } from "react-router-dom";
 import { Loader } from "../../components/common/Loader.tsx";
+import { OrderDetailsTable } from "../../components/admin/OrderDetailsTable";
+import { ShippingAddressTable } from "../../components/admin/ShippingAddressTable";
+import { OrderItemsTable } from "../../components/admin/OrderItemsTable";
 
 export interface IOrderStatusUpdate {
   isDelivered?: boolean;
@@ -18,7 +21,6 @@ export function AdminOrderDetailPage() {
 
   const order = orderResponse?.data;
 
-  console.log(order);
   const handleStatusUpdate = async (statusUpdate: IOrderStatusUpdate) => {
     try {
       await updateOrderStatus({ id: id!, updateData: statusUpdate }).unwrap();
@@ -44,78 +46,9 @@ export function AdminOrderDetailPage() {
       <h1 className="text-3xl font-bold mb-6">Order Details</h1>
       {order && (
         <>
-          <div className="mb-4">
-            <h2 className="text-2xl font-semibold mb-2">
-              Order ID: {order._id}
-            </h2>
-            <div className="overflow-x-auto mb-6">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>User</th>
-                    <th>Payment Method</th>
-                    <th>Paid</th>
-                    <th>Delivered</th>
-                    <th>Total</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{order.user.email}</td>
-                    <td>{order.paymentMethod}</td>
-                    <td>{order.isPaid ? "Yes" : "No"}</td>
-                    <td>{order.isDelivered ? "Yes" : "No"}</td>
-                    <td>{order.totalPrice} IQD</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-
-            <div className="overflow-x-auto mb-6">
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>City</th>
-                    <th>Neighborhood</th>
-                    <th>Street Number</th>
-                    <th>House Number</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{order.shippingAddress.city}</td>
-                    <td>{order.shippingAddress.neighborhood}</td>
-                    <td>{order.shippingAddress.streetNumber}</td>
-                    <td>{order.shippingAddress.houseNumber}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div className="overflow-x-auto mb-6">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>Product</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                  <th>Total</th>
-                </tr>
-              </thead>
-              <tbody>
-                {order.items.map((item, index) => (
-                  <tr key={item._id}>
-                    <th>{index + 1}</th>
-                    <td>{item.name}</td>
-                    <td>{item.quantity}</td>
-                    <td>{item.price} IQD</td>
-                    <td>{item.price * item.quantity} IQD</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <OrderDetailsTable order={order} />
+          <ShippingAddressTable order={order} />
+          <OrderItemsTable order={order} />
           <div className="flex space-x-4">
             {!order.isDelivered && (
               <button
