@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 import { TProduct } from "../../types/TProduct";
 
-interface NewProductProps {
+interface ProductProps {
   product: TProduct;
 }
 
-export function NewProduct({ product }: NewProductProps) {
+export function Product({ product }: ProductProps) {
   return (
     <div
       key={product._id}

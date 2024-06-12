@@ -4,8 +4,8 @@ import { useGetNewProductsQuery } from "../../redux/product/productApiSlice.ts";
 import { TApiError } from "../../types/TApiError.ts";
 import { useGetCategoriesQuery } from "../../redux/category/categoryApiSlice.ts";
 import { Loader } from "../../components/common/Loader.tsx";
-import { Category } from "../../components/home/Category";
-import { NewProduct } from "../../components/home/NewProduct";
+import { Product } from "../../components/common/Product.tsx";
+import { ErrorMessage } from "../../components/common/ErrorMessage.tsx";
 
 export function HomePage() {
   const {
@@ -30,6 +30,9 @@ export function HomePage() {
     toast.error(apiError.data.message || "An error occurred");
   }
 
+  if (newProductsIsError || categoriesIsError) {
+    return <ErrorMessage />;
+  }
   return (
     <div>
       <div
@@ -63,7 +66,7 @@ export function HomePage() {
             <div className="flex md:grid md:grid-cols-4 gap-4">
               {newProductsData?.data?.map((product) => (
                 <div key={product._id} className="flex-shrink-0 w-64 md:w-auto">
-                  <NewProduct product={product} />
+                  <Product product={product} />
                 </div>
               ))}
             </div>
@@ -74,7 +77,12 @@ export function HomePage() {
             <div className="flex flex-wrap md:grid md:grid-cols-4 gap-4">
               {categoriesData?.data.map((category) => (
                 <div key={category._id} className="md:w-auto">
-                  <Category category={category} />
+                  <Link
+                    to={`/products/?category=${category.name}`}
+                    className="btn-primary btn md:w-full"
+                  >
+                    {category.name}
+                  </Link>
                 </div>
               ))}
             </div>
