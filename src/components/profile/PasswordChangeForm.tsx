@@ -1,5 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Loader } from "../common/Loader.tsx";
+import { FormInput } from "../common/FormInput.tsx";
 
 export interface TPassword {
   oldPassword: string;
@@ -32,8 +33,15 @@ export function PasswordChangeForm({
       onSubmit={handleSubmit(handleFormSubmit)}
       className={"flex flex-col gap-4"}
     >
-      <div>
-        <label className="input input-bordered flex items-center gap-2">
+      <FormInput
+        type="password"
+        registration={register("oldPassword", {
+          required: "Old Password is required",
+        })}
+        error={errors.oldPassword}
+        placeHolder="Enter your old password"
+        id="oldPassword"
+        icon={
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
@@ -46,19 +54,18 @@ export function PasswordChangeForm({
               clipRule="evenodd"
             />
           </svg>
-          <input
-            type="password"
-            className="grow"
-            placeholder="Old Password"
-            {...register("oldPassword", { required: true })}
-          />
-        </label>
-        {errors.oldPassword && (
-          <span className="text-error text-sm">This field is required</span>
-        )}
-      </div>
-      <div>
-        <label className="input input-bordered flex items-center gap-2">
+        }
+      />
+
+      <FormInput
+        type="password"
+        registration={register("newPassword", {
+          required: "New Password is required",
+        })}
+        error={errors.newPassword}
+        placeHolder="Enter your new password"
+        id="newPassword"
+        icon={
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 16 16"
@@ -71,17 +78,9 @@ export function PasswordChangeForm({
               clipRule="evenodd"
             />
           </svg>
-          <input
-            type="password"
-            className="grow"
-            placeholder="New Password"
-            {...register("newPassword", { required: true })}
-          />
-        </label>
-        {errors.newPassword && (
-          <span className="text-error text-sm">This field is required</span>
-        )}
-      </div>
+        }
+      />
+
       <button className="btn btn-neutral " disabled={isLoading} type="submit">
         {isLoading ? <Loader /> : "Change Password"}
       </button>
