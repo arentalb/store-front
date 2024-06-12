@@ -6,7 +6,7 @@ import { useRegisterMutation } from "../../redux/auth/authApiSlice.ts";
 import { RootState } from "../../redux/store.ts";
 import { TApiError } from "../../types/TApiError.ts";
 import { Loader } from "../../components/common/Loader.tsx";
-import { InputForm } from "../../components/common/InputForm.tsx";
+import { FormInput } from "../../components/common/FormInput.tsx";
 import { Link, useNavigate } from "react-router-dom";
 
 interface RegisterFormInputs {
@@ -51,7 +51,7 @@ export function RegisterPage() {
     <div className={"py-20"}>
       <h1 className={"text-2xl font-bold mb-8"}>Register form</h1>
       <form className={"max-w-md flex flex-col gap-4"}>
-        <InputForm
+        <FormInput
           type="email"
           registration={register("email", { required: "Email is required" })}
           error={errors.email}
@@ -69,7 +69,7 @@ export function RegisterPage() {
             </svg>
           }
         />
-        <InputForm
+        <FormInput
           type="text"
           registration={register("username", {
             required: "Username is required",
@@ -89,7 +89,7 @@ export function RegisterPage() {
           }
         />
 
-        <InputForm
+        <FormInput
           type="password"
           registration={register("password", {
             required: "Password is required",

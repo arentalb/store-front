@@ -8,7 +8,7 @@ import { setCredentials } from "../../redux/auth/authSlice.ts";
 import { RootState } from "../../redux/store.ts";
 import { TApiError } from "../../types/TApiError.ts";
 import { Loader } from "../../components/common/Loader.tsx";
-import { InputForm } from "../../components/common/InputForm.tsx";
+import { FormInput } from "../../components/common/FormInput.tsx";
 
 interface LoginFormInputs {
   email: string;
@@ -50,7 +50,7 @@ export function LoginPage() {
       <h1 className={"text-3xl font-bold mb-8"}>Login form</h1>
 
       <form className={"max-w-md flex flex-col gap-6"}>
-        <InputForm
+        <FormInput
           type="email"
           registration={register("email", {
             required: "Email is required",
@@ -71,7 +71,7 @@ export function LoginPage() {
           }
         />
 
-        <InputForm
+        <FormInput
           type="password"
           registration={register("password", {
             required: "Password is required",

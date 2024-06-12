@@ -16,7 +16,7 @@ interface InputFormProps {
   icon?: React.ReactNode;
 }
 
-export function InputForm({
+export function FormInput({
   label,
   type,
   registration,
