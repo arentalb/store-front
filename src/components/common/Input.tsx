@@ -7,7 +7,7 @@ interface InputFieldProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export function InputField({ label, name, value, onChange }: InputFieldProps) {
+export function Input({ label, name, value, onChange }: InputFieldProps) {
   return (
     <div className="mb-4">
       <label className="block text-gray-700 text-sm font-bold mb-2">

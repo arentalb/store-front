@@ -7,18 +7,24 @@ import { TShippingAddress } from "../../types/TOrder";
 import { useCreateUserOrderMutation } from "../../redux/order/orderApiSlice.ts";
 import { useGetCartQuery } from "../../redux/cart/cartApiSlice.ts";
 import { Loader } from "../../components/common/Loader.tsx";
-import { InputField } from "../../components/common/InputField";
+import { Input } from "../../components/common/Input.tsx";
 import { OrderSummary } from "../../components/user/OrderSummary";
+import { ErrorMessage } from "../../components/common/ErrorMessage.tsx";
 
 export function UserCheckoutPage() {
+  const navigate = useNavigate();
+
   const {
-    data: cartData,
-    error: getCartError,
-    isLoading: isGettingCart,
+    data: cartResponse,
+    error: cartError,
+    isError: isCartError,
+    isLoading: isCartLoading,
   } = useGetCartQuery();
 
   const [createOrderFromCart, { isLoading: isCreatingOrder }] =
     useCreateUserOrderMutation();
+
+  const cart: TCart | undefined = cartResponse?.data;
 
   const [shippingAddress, setShippingAddress] = useState<TShippingAddress>({
     city: "",
@@ -27,9 +33,13 @@ export function UserCheckoutPage() {
     houseNumber: "",
   });
 
-  const cart: TCart | undefined = cartData?.data;
-
-  const navigate = useNavigate();
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setShippingAddress((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   const handleCheckout = async () => {
     try {
@@ -42,42 +52,43 @@ export function UserCheckoutPage() {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setShippingAddress((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
-  if (isGettingCart) return <Loader />;
-  if (getCartError) {
-    const apiError = getCartError as TApiError;
-    return <div>{apiError.data.message}</div>;
+  if (isCartError) {
+    const apiError = cartError as TApiError;
+    return (
+      <ErrorMessage
+        message={
+          apiError.data?.message || "An error occurred while fetching cart"
+        }
+      />
+    );
   }
+  if (isCartLoading) return <Loader />;
 
+  if (!cart) {
+    return <ErrorMessage message={"No cart available "} />;
+  }
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">Checkout</h1>
-      <InputField
+      <Input
         label="City"
         name="city"
         value={shippingAddress.city}
         onChange={handleInputChange}
       />
-      <InputField
+      <Input
         label="Neighborhood"
         name="neighborhood"
         value={shippingAddress.neighborhood}
         onChange={handleInputChange}
       />
-      <InputField
+      <Input
         label="Street Number"
         name="streetNumber"
         value={shippingAddress.streetNumber}
         onChange={handleInputChange}
       />
-      <InputField
+      <Input
         label="House Number"
         name="houseNumber"
         value={shippingAddress.houseNumber}
