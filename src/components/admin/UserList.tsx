@@ -1,32 +1,14 @@
-import { useGetUsersQuery } from "../../redux/user/userApiSlice.ts";
-import { toast } from "react-toastify";
-import { TApiError } from "../../types/TApiError.ts";
 import { FiCheck, FiX } from "react-icons/fi";
-import { Loader } from "../common/Loader.tsx";
+import { TUserDetail } from "../../types/TUser.ts";
 
-export function UserList() {
-  const {
-    data: usersResponse,
-    isLoading: isUsersLoading,
-    error: usersError,
-    isError: isUsersError,
-  } = useGetUsersQuery();
+interface UserListProps {
+  users: TUserDetail[];
+}
 
-  if (isUsersError && usersError) {
-    const apiError = usersError as TApiError;
-    toast.error(apiError?.data?.message || "An error occurred");
-    return <div>Error loading users</div>;
-  }
-
-  if (isUsersLoading) {
-    return <Loader />;
-  }
-
-  if (!usersResponse || !usersResponse.data) {
+export function UserList({ users }: UserListProps) {
+  if (!users || users.length === 0) {
     return <div>No users found</div>;
   }
-
-  const users = usersResponse.data;
 
   return (
     <div className="overflow-x-auto">
