@@ -2,13 +2,13 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { useGetCategoriesQuery } from "../../../redux/category/categoryApiSlice.ts";
 import { useCreateProductMutation } from "../../../redux/product/productApiSlice.ts";
-import { useParams } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { TApiError } from "../../../types/TApiError.ts";
 import { Loader } from "../../../components/common/Loader.tsx";
-import { FormInput } from "../../../components/admin/FormInput";
 import { FormSelect } from "../../../components/admin/FormSelect";
 import { ImagePreview } from "../../../components/admin/ImagePreview";
+import { FormInput } from "../../../components/common/FormInput.tsx";
+import { ErrorMessage } from "../../../components/common/ErrorMessage.tsx";
 
 interface IProductFormInputs {
   name: string;
@@ -22,11 +22,8 @@ interface IProductFormInputs {
 }
 
 export function AdminProductFormAddPage() {
-  const { id } = useParams();
-  const isEditMode = Boolean(id);
-
   const {
-    data: categoryData,
+    data: categoriesResponse,
     error: categoryError,
     isError: isCategoryError,
     isLoading: isCategoryLoading,
@@ -34,12 +31,7 @@ export function AdminProductFormAddPage() {
 
   const [createProduct, { isLoading: isCreating }] = useCreateProductMutation();
 
-  const categories = categoryData?.data;
-
-  const [coverImagePreview, setCoverImagePreview] = useState<string | null>(
-    null,
-  );
-  const [imagesPreview, setImagesPreview] = useState<string[]>([]);
+  const categories = categoriesResponse?.data || [];
 
   const {
     register,
@@ -49,12 +41,29 @@ export function AdminProductFormAddPage() {
     formState: { errors },
   } = useForm<IProductFormInputs>();
 
-  function getCategoryId() {
-    const category = categories?.find(
-      (cat) => cat.name === getValues("category"),
-    );
-    return category ? category._id : "";
-  }
+  const [coverImagePreview, setCoverImagePreview] = useState<string | null>(
+    null,
+  );
+  const [imagesPreview, setImagesPreview] = useState<string[]>([]);
+
+  const handleCoverImageChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setCoverImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleImagesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files) {
+      const previewUrls = Array.from(files).map((file) =>
+        URL.createObjectURL(file),
+      );
+      setImagesPreview(previewUrls);
+    }
+  };
 
   const onCreate: SubmitHandler<IProductFormInputs> = async (product) => {
     const formData = new FormData();
@@ -82,39 +91,30 @@ export function AdminProductFormAddPage() {
     }
   };
 
+  function getCategoryId() {
+    const category = categories?.find(
+      (cat) => cat.name === getValues("category"),
+    );
+    return category ? category._id : "";
+  }
+
   if (isCategoryError) {
     const apiError = categoryError as TApiError;
-    toast.error(apiError?.data?.message || "An error occurred");
+    return (
+      <ErrorMessage
+        message={
+          apiError.data?.message ||
+          "An error occurred while fetching categories"
+        }
+      />
+    );
   }
 
-  if (isCategoryLoading) {
-    return <Loader />;
-  }
-
-  const handleCoverImageChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setCoverImagePreview(URL.createObjectURL(file));
-    }
-  };
-
-  const handleImagesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files) {
-      const previewUrls = Array.from(files).map((file) =>
-        URL.createObjectURL(file),
-      );
-      setImagesPreview(previewUrls);
-    }
-  };
+  if (isCategoryLoading) return <Loader />;
 
   return (
     <form>
-      <h1 className="text-2xl mb-4">
-        {isEditMode ? "Edit Product" : "Create New Product"}
-      </h1>
+      <h1 className="text-2xl mb-4">Create New Product </h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-2">
         <FormInput
           label="Product name"
@@ -188,9 +188,7 @@ export function AdminProductFormAddPage() {
               type="file"
               className="file-input file-input-bordered w-full sm:max-w-xs"
               {...register("coverImage", {
-                required: isEditMode
-                  ? false
-                  : "Product cover image is required",
+                required: "Product cover image is required",
               })}
               onChange={handleCoverImageChange}
             />
@@ -211,7 +209,7 @@ export function AdminProductFormAddPage() {
               multiple
               className="file-input file-input-bordered w-full sm:max-w-xs"
               {...register("images", {
-                required: isEditMode ? false : "Product images are required",
+                required: "Product images are required",
               })}
               onChange={handleImagesChange}
             />
@@ -231,9 +229,10 @@ export function AdminProductFormAddPage() {
         <button
           type="button"
           onClick={handleSubmit(onCreate)}
+          disabled={isCreating}
           className={`btn btn-active btn-neutral w-full sm:max-w-xs`}
         >
-          {isCreating ? <Loader /> : "Create"}
+          {isCreating ? "Creating..." : "Create"}
         </button>
       </div>
     </form>
