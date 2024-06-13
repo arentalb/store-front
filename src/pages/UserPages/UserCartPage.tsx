@@ -8,20 +8,23 @@ import {
 } from "../../redux/cart/cartApiSlice.ts";
 import { Loader } from "../../components/common/Loader.tsx";
 import { CartItems } from "../../components/user/CartItems";
+import { TCart } from "../../types/TCart.ts";
+import { ErrorMessage } from "../../components/common/ErrorMessage.tsx";
 
 export function UserCartPage() {
   const {
-    data,
-    error: getCartError,
-    isLoading: isGettingCart,
+    data: cartResponse,
+    error: cartError,
+    isError: isCartError,
+    isLoading: isCartLoading,
   } = useGetCartQuery();
 
-  const [updateCartItem, { error: updateCartError }] =
+  const [updateCartItem, { isLoading: isUpdatingCartItem }] =
     useUpdateCartItemMutation();
-  const [removeCartItem, { error: removeCartError }] =
+  const [removeCartItem, { isLoading: isRemovingCartItem }] =
     useRemoveCartItemMutation();
 
-  const cart = data?.data;
+  const cart: TCart | undefined = cartResponse?.data;
 
   const handleUpdateCartItem = async (productId: string, quantity: number) => {
     try {
@@ -43,44 +46,43 @@ export function UserCartPage() {
     }
   };
 
-  if (isGettingCart) return <Loader />;
-  if (getCartError) {
-    const apiError = getCartError as TApiError;
-    return <div>{apiError.data.message}</div>;
-  }
-  if (updateCartError) {
-    const apiError = updateCartError as TApiError;
-    return <div>{apiError.data.message}</div>;
-  }
-  if (removeCartError) {
-    const apiError = removeCartError as TApiError;
-    return <div>{apiError.data.message}</div>;
-  }
-  if (!cart) {
-    return <p className="text-center text-gray-500">Your cart is empty.</p>;
+  if (isCartError) {
+    const apiError = cartError as TApiError;
+    return (
+      <ErrorMessage
+        message={
+          apiError.data?.message || "An error occurred while fetching cart"
+        }
+      />
+    );
   }
 
+  if (isCartLoading) return <Loader />;
+
+  if (!cart) {
+    return <ErrorMessage message={"No cart available "} />;
+  }
+  if (cart.items.length === 0) {
+    return <ErrorMessage message={"No cart item available "} />;
+  }
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">Your Cart</h1>
-      {cart?.items?.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="col-span-2">
-            <CartItems
-              items={cart.items}
-              handleUpdateCartItem={handleUpdateCartItem}
-              handleRemoveCartItem={handleRemoveCartItem}
-            />
-          </div>
-          <div className="col-span-1">
-            <Link className="btn btn-primary w-full" to="/checkout">
-              Checkout
-            </Link>
-          </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="col-span-2">
+          <CartItems
+            items={cart.items}
+            handleUpdateCartItem={handleUpdateCartItem}
+            handleRemoveCartItem={handleRemoveCartItem}
+            loading={isRemovingCartItem || isUpdatingCartItem}
+          />
         </div>
-      ) : (
-        <p className="text-center text-gray-500">Your cart is empty.</p>
-      )}
+        <div className="col-span-1">
+          <Link className="btn btn-primary w-full" to="/checkout">
+            Checkout
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
