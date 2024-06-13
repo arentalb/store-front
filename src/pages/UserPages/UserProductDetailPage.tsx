@@ -94,11 +94,11 @@ export function UserProductDetailPage() {
       />
     );
   }
-  if (!product) {
-    return <ErrorMessage message={"No product available "} />;
-  }
   if (isCartLoading || isProductLoading) {
     return <Loader />;
+  }
+  if (!product) {
+    return <ErrorMessage message={"No product available "} />;
   }
 
   return (

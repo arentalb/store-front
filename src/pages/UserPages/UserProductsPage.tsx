@@ -25,10 +25,12 @@ export function UserProductsPage() {
       />
     );
   }
+  if (isProductsLoading) return <Loader />;
+
   if (products?.length === 0) {
     return <EmptyMessage message={"There is no product to show "} />;
   }
-  if (isProductsLoading) return <Loader />;
+
   return (
     <>
       <h1 className="uppercase text-3xl font-bold mb-6">ALL PRODUCTS</h1>
