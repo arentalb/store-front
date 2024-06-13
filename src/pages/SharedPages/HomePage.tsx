@@ -1,38 +1,55 @@
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useGetNewProductsQuery } from "../../redux/product/productApiSlice.ts";
 import { TApiError } from "../../types/TApiError.ts";
 import { useGetCategoriesQuery } from "../../redux/category/categoryApiSlice.ts";
 import { Loader } from "../../components/common/Loader.tsx";
 import { Product } from "../../components/common/Product.tsx";
 import { ErrorMessage } from "../../components/common/ErrorMessage.tsx";
+import { EmptyMessage } from "../../components/common/EmptyMessage.tsx";
+import { TCategory } from "../../types/TCategory.ts";
+import { TProduct } from "../../types/TProduct.ts";
 
 export function HomePage() {
   const {
-    data: newProductsData,
+    data: newProductsResponse,
     isLoading: newProductsIsLoading,
     error: newProductsError,
     isError: newProductsIsError,
   } = useGetNewProductsQuery();
   const {
-    data: categoriesData,
+    data: categoriesResponse,
     isLoading: categoriesIsLoading,
     error: categoriesError,
     isError: categoriesIsError,
   } = useGetCategoriesQuery();
 
+  const categories: TCategory[] | undefined = categoriesResponse?.data || [];
+  const products: TProduct[] | undefined = newProductsResponse?.data || [];
+
   if (newProductsIsError) {
     const apiError = newProductsError as TApiError;
-    toast.error(apiError.data.message || "An error occurred");
+    return (
+      <ErrorMessage
+        message={
+          apiError.data?.message ||
+          "An error occurred while fetching new products"
+        }
+      />
+    );
   }
   if (categoriesIsError) {
     const apiError = categoriesError as TApiError;
-    toast.error(apiError.data.message || "An error occurred");
+    return (
+      <ErrorMessage
+        message={
+          apiError.data?.message ||
+          "An error occurred while fetching categories"
+        }
+      />
+    );
   }
+  if (categoriesIsLoading || newProductsIsLoading) return <Loader />;
 
-  if (newProductsIsError || categoriesIsError) {
-    return <ErrorMessage />;
-  }
   return (
     <div>
       <div
@@ -57,38 +74,50 @@ export function HomePage() {
           </div>
         </div>
       </div>
-      {categoriesIsLoading || newProductsIsLoading ? (
-        <Loader />
-      ) : (
-        <>
-          <h1 className="text-2xl mb-8">NEW PRODUCTS</h1>
-          <div className="overflow-x-auto md:overflow-x-visible mb-12">
-            <div className="flex md:grid md:grid-cols-4 gap-4">
-              {newProductsData?.data?.map((product) => (
-                <div key={product._id} className="flex-shrink-0 w-64 md:w-auto">
-                  <Product product={product} />
-                </div>
-              ))}
-            </div>
-          </div>
 
-          <h1 className="text-2xl mb-8">CATEGORIES</h1>
-          <div className="overflow-x-auto md:overflow-x-visible mb-12">
-            <div className="flex flex-wrap md:grid md:grid-cols-4 gap-4">
-              {categoriesData?.data.map((category) => (
-                <div key={category._id} className="md:w-auto">
-                  <Link
-                    to={`/products/?category=${category.name}`}
-                    className="btn-primary btn md:w-full"
+      <>
+        <h1 className="text-2xl mb-8">NEW PRODUCTS</h1>
+        <div className="overflow-x-auto md:overflow-x-visible mb-12">
+          <div className="flex md:grid md:grid-cols-4 gap-4">
+            {products.length === 0 ? (
+              <EmptyMessage message="No new product available" />
+            ) : (
+              <>
+                {products.map((product) => (
+                  <div
+                    key={product._id}
+                    className="flex-shrink-0 w-64 md:w-auto"
                   >
-                    {category.name}
-                  </Link>
-                </div>
-              ))}
-            </div>
+                    <Product product={product} />
+                  </div>
+                ))}
+              </>
+            )}
           </div>
-        </>
-      )}
+        </div>
+
+        <h1 className="text-2xl mb-8">CATEGORIES</h1>
+        <div className="overflow-x-auto md:overflow-x-visible mb-12">
+          <div className="flex flex-wrap md:grid md:grid-cols-4 gap-4">
+            {categories.length === 0 ? (
+              <EmptyMessage message="No category available" />
+            ) : (
+              <>
+                {categories.map((category) => (
+                  <div key={category._id} className="md:w-auto">
+                    <Link
+                      to={`/products/?category=${category.name}`}
+                      className="btn-primary btn md:w-full"
+                    >
+                      {category.name}
+                    </Link>
+                  </div>
+                ))}
+              </>
+            )}
+          </div>
+        </div>
+      </>
     </div>
   );
 }
