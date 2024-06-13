@@ -1,6 +1,4 @@
-// src/pages/AdminPages/AdminProductFormEditPage.tsx
-
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -12,10 +10,11 @@ import {
 } from "../../../redux/product/productApiSlice.ts";
 import { TApiError } from "../../../types/TApiError.ts";
 import { Loader } from "../../../components/common/Loader.tsx";
-import { FormInput } from "../../../components/admin/FormInput";
 import { FormSelect } from "../../../components/admin/FormSelect";
 import { ImagePreview } from "../../../components/admin/ImagePreview";
 import { FiX } from "react-icons/fi";
+import { FormInput } from "../../../components/common/FormInput.tsx";
+import { ErrorMessage } from "../../../components/common/ErrorMessage.tsx";
 
 interface IProductFormInputs {
   name: string;
@@ -32,24 +31,24 @@ export function AdminProductFormEditPage() {
   const { id } = useParams();
   const navigate = useNavigate();
   const {
-    data: categoryData,
+    data: categoryResponse,
     error: categoryError,
     isError: isCategoryError,
     isLoading: isCategoryLoading,
   } = useGetCategoriesQuery();
 
   const {
-    isFetching: isProductFetching,
+    data: productResponse,
+    isLoading: isProductLoading,
     error: productError,
     isError: isProductError,
-    refetch,
   } = useGetProductByIdQuery(id!, { skip: !id });
 
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
   const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
 
-  const categories = categoryData?.data;
-
+  const categories = categoryResponse?.data || [];
+  const product = productResponse?.data;
   const {
     register,
     handleSubmit,
@@ -57,56 +56,6 @@ export function AdminProductFormEditPage() {
     getValues,
     formState: { errors },
   } = useForm<IProductFormInputs>();
-
-  const [coverImagePreview, setCoverImagePreview] = useState<string | null>(
-    null,
-  );
-  const [imagesPreview, setImagesPreview] = useState<string[]>([]);
-  const [deletedImages, setDeletedImages] = useState<string[]>([]);
-
-  const fetchProductDetails = useCallback(async () => {
-    if (!id) return;
-
-    try {
-      const response = await refetch();
-      if (response?.data) {
-        const {
-          name,
-          description,
-          category,
-          price,
-          stock,
-          tags,
-          coverImage,
-          images,
-        } = response.data.data;
-
-        setValue("name", name);
-        setValue("description", description);
-        setValue("category", category.name);
-        setValue("price", price);
-        setValue("stock", stock);
-        setValue("tags", tags.toString());
-
-        setCoverImagePreview(coverImage);
-        setImagesPreview(images);
-      }
-    } catch (error) {
-      const apiError = error as TApiError;
-      toast.error(apiError?.data?.message || "Error fetching product details");
-    }
-  }, [id, refetch, setValue]);
-
-  useEffect(() => {
-    fetchProductDetails();
-  }, [fetchProductDetails]);
-
-  function getCategoryId() {
-    const category = categories?.find(
-      (cat) => cat.name === getValues("category"),
-    );
-    return category ? category._id : "";
-  }
 
   const onEdit: SubmitHandler<IProductFormInputs> = async (product) => {
     const formData = new FormData();
@@ -152,18 +101,44 @@ export function AdminProductFormEditPage() {
     }
   };
 
-  if (isCategoryError) {
-    const apiError = categoryError as TApiError;
-    toast.error(apiError?.data?.message || "An error occurred");
-  }
-  if (isProductError) {
-    const apiError = productError as TApiError;
-    toast.error(apiError?.data?.message || "An error occurred");
+  useEffect(() => {
+    if (product) {
+      const {
+        name,
+        description,
+        category,
+        price,
+        stock,
+        tags,
+        coverImage,
+        images,
+      } = product;
+
+      setValue("name", name);
+      setValue("description", description);
+      setValue("category", category.name);
+      setValue("price", price);
+      setValue("stock", stock);
+      setValue("tags", tags.toString());
+
+      setCoverImagePreview(coverImage);
+      setImagesPreview(images);
+    }
+  }, [product, productResponse, setValue]);
+
+  const [coverImagePreview, setCoverImagePreview] = useState<string | null>(
+    null,
+  );
+
+  function getCategoryId() {
+    const category = categories?.find(
+      (cat) => cat.name === getValues("category"),
+    );
+    return category ? category._id : "";
   }
 
-  if (isCategoryLoading || isProductFetching) {
-    return <Loader />;
-  }
+  const [imagesPreview, setImagesPreview] = useState<string[]>([]);
+  const [deletedImages, setDeletedImages] = useState<string[]>([]);
 
   const handleCoverImageChange = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -195,6 +170,32 @@ export function AdminProductFormEditPage() {
       setCoverImagePreview(null);
     }
   };
+
+  if (isCategoryError) {
+    const apiError = categoryError as TApiError;
+    return (
+      <ErrorMessage
+        message={
+          apiError.data?.message ||
+          "An error occurred while fetching categories"
+        }
+      />
+    );
+  }
+  if (isProductError) {
+    const apiError = productError as TApiError;
+    return (
+      <ErrorMessage
+        message={
+          apiError.data?.message || "An error occurred while fetching products"
+        }
+      />
+    );
+  }
+
+  if (isCategoryLoading || isProductLoading) {
+    return <Loader />;
+  }
 
   return (
     <form>
