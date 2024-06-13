@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { createApi } from "@reduxjs/toolkit/query/react";
 import {
   CART_TAG,
   CATEGORY_TAG,
@@ -7,14 +7,10 @@ import {
   PROFILE_TAG,
   USER_TAG,
 } from "./tags.ts";
-
-const baseQuery = fetchBaseQuery({
-  baseUrl: import.meta.env.VITE_BASE_URL || "",
-  credentials: "include",
-});
+import baseQueryWithReauth from "./baseQueryWithReauth.ts";
 
 const apiSlice = createApi({
-  baseQuery: baseQuery,
+  baseQuery: baseQueryWithReauth,
   tagTypes: [
     PRODUCT_TAG,
     ORDER_TAG,
