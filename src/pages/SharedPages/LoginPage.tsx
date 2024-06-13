@@ -77,7 +77,7 @@ export function LoginPage() {
           registration={register("password", {
             required: "Password is required",
           })}
-          error={errors.password}
+          error={errors.email}
           placeHolder="Enter your password"
           id="password"
           icon={
@@ -103,12 +103,28 @@ export function LoginPage() {
         >
           {isLoading ? <Loader /> : "login"}
         </button>
-        <p className={"text-center text-sm"}>
-          Don't have an account?{" "}
-          <Link className={"text-info hover:underline"} to={"/register"}>
-            Register
-          </Link>
-        </p>
+        <div className="text-center text-sm">
+          <p>
+            Don't have an account?{" "}
+            <Link className="text-info hover:underline" to="/register">
+              Register
+            </Link>
+          </p>
+          <div className="flex items-center my-4">
+            <div className="flex-grow border-t border-gray-400"></div>
+            <span className="mx-4 text-gray-600">OR</span>
+            <div className="flex-grow border-t border-gray-400"></div>
+          </div>
+          <p>
+            You forget your password?{" "}
+            <Link
+              className="text-info hover:underline"
+              to="/reset-password-request"
+            >
+              Reset password
+            </Link>
+          </p>
+        </div>
       </form>
     </div>
   );

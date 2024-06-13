@@ -21,6 +21,8 @@ import { UserOrdersPage } from "../pages/UserPages/UserOrdersPage.tsx";
 import { UserOrderDetailPage } from "../pages/UserPages/UserOrderDetailPage.tsx";
 import { SendVerifyEmailPage } from "../pages/SharedPages/SendVerifyEmailPage.tsx";
 import { VerifyEmailPage } from "../pages/SharedPages/VerifyEmailPage.tsx";
+import { ResetPasswordRequestPage } from "../pages/SharedPages/ResetPasswordRequestPage.tsx";
+import { ResetPasswordConfirmPage } from "../pages/SharedPages/ResetPasswordConfirmPage.tsx";
 
 function App() {
   return (
@@ -37,6 +39,15 @@ function App() {
           />
           <Route path="verify-email-confirm" element={<VerifyEmailPage />} />
 
+          <Route
+            path="reset-password-request"
+            element={<ResetPasswordRequestPage />}
+          />
+
+          <Route
+            path="reset-password-confirm"
+            element={<ResetPasswordConfirmPage />}
+          />
           {/* General Private Route for authenticated users */}
           <Route
             element={<PrivateRoute roles={["Admin", "SuperAdmin", "User"]} />}
