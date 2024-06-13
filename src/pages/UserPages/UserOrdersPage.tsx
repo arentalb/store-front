@@ -1,22 +1,34 @@
-// src/pages/UserPages/UserOrdersPage.tsx
-
-import { toast } from "react-toastify";
 import { useGetUserOrdersQuery } from "../../redux/order/orderApiSlice.ts";
 import { TApiError } from "../../types/TApiError.ts";
 import { TOrder } from "../../types/TOrder.ts";
 import { Loader } from "../../components/common/Loader.tsx";
 import { OrdersTable } from "../../components/user/OrdersTable";
+import { ErrorMessage } from "../../components/common/ErrorMessage.tsx";
+import { EmptyMessage } from "../../components/common/EmptyMessage.tsx";
 
 export function UserOrdersPage() {
-  const { data, error, isLoading } = useGetUserOrdersQuery();
-  const orders: TOrder[] | undefined = data?.data;
+  const {
+    data: ordersResponse,
+    error: ordersError,
+    isLoading: isOrdersLoading,
+    isError: isOrdersError,
+  } = useGetUserOrdersQuery();
+  const orders: TOrder[] | undefined = ordersResponse?.data || [];
 
-  if (isLoading) return <Loader />;
+  if (isOrdersError) {
+    const apiError = ordersError as TApiError;
+    return (
+      <ErrorMessage
+        message={
+          apiError.data?.message || "An error occurred while fetching orders"
+        }
+      />
+    );
+  }
+  if (isOrdersLoading) return <Loader />;
 
-  if (error) {
-    const apiError = error as TApiError;
-    toast.error(apiError.data.message || "An error occurred");
-    return <div>Error: {apiError.data.message}</div>;
+  if (orders?.length === 0) {
+    return <EmptyMessage message={"There is no order to show "} />;
   }
 
   return (
