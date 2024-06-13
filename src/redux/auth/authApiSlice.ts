@@ -13,6 +13,10 @@ interface RegisterRequest {
   password: string;
 }
 
+interface verifyRequest {
+  email: string;
+}
+
 interface User {
   username: string;
   email: string;
@@ -42,9 +46,23 @@ const authSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    sendEmailVerification: builder.mutation<
+      TApiResponse<string>,
+      verifyRequest
+    >({
+      query: (data) => ({
+        url: `${AUTH_URL}/verify-email/request`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
   overrideExisting: true,
 });
 
-export const { useLoginMutation, useLogoutMutation, useRegisterMutation } =
-  authSlice;
+export const {
+  useLoginMutation,
+  useLogoutMutation,
+  useRegisterMutation,
+  useSendEmailVerificationMutation,
+} = authSlice;

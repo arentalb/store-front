@@ -20,6 +20,12 @@ const authSlice = createSlice({
       state.user = action.payload;
       localStorage.setItem("user", JSON.stringify(action.payload));
     },
+    updateVerificationStatus: (state) => {
+      if (state.user) {
+        state.user.isVerified = true;
+        localStorage.setItem("user", JSON.stringify(state.user));
+      }
+    },
     logOut: (state) => {
       state.user = null;
       localStorage.removeItem("user");
@@ -29,5 +35,6 @@ const authSlice = createSlice({
 
 export const getUser = (state: RootState): TUser | null => state.auth.user;
 
-export const { setCredentials, logOut } = authSlice.actions;
+export const { setCredentials, updateVerificationStatus, logOut } =
+  authSlice.actions;
 export default authSlice.reducer;

@@ -19,6 +19,8 @@ import { UserCartPage } from "../pages/UserPages/UserCartPage.tsx";
 import { UserCheckoutPage } from "../pages/UserPages/UserCheckoutPage.tsx";
 import { UserOrdersPage } from "../pages/UserPages/UserOrdersPage.tsx";
 import { UserOrderDetailPage } from "../pages/UserPages/UserOrderDetailPage.tsx";
+import { SendVerifyEmailPage } from "../pages/SharedPages/SendVerifyEmailPage.tsx";
+import { VerifyEmailPage } from "../pages/SharedPages/VerifyEmailPage.tsx";
 
 function App() {
   return (
@@ -30,13 +32,23 @@ function App() {
           <Route path="register" element={<RegisterPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route
+            path="verify-email-request"
+            element={<SendVerifyEmailPage />}
+          />
+          <Route path="verify-email-confirm" element={<VerifyEmailPage />} />
+
+          {/* General Private Route for authenticated users */}
+          <Route
             element={<PrivateRoute roles={["Admin", "SuperAdmin", "User"]} />}
           >
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/products" element={<UserProductsPage />} />
           </Route>
 
-          <Route element={<PrivateRoute roles={["User"]} />}>
-            <Route path="/products" element={<UserProductsPage />} />
+          {/* Routes for verified users */}
+          <Route
+            element={<PrivateRoute roles={["User"]} mustVerified={true} />}
+          >
             <Route path="/product/:id" element={<UserProductDetailPage />} />
             <Route path="/cart" element={<UserCartPage />} />
             <Route path="/checkout" element={<UserCheckoutPage />} />
@@ -44,9 +56,15 @@ function App() {
             <Route path="/orders/:id" element={<UserOrderDetailPage />} />
           </Route>
 
+          {/* Admin Routes for verified users */}
           <Route
-            path={"/admin"}
-            element={<PrivateRoute roles={["Admin", "SuperAdmin"]} />}
+            path="/admin"
+            element={
+              <PrivateRoute
+                roles={["Admin", "SuperAdmin"]}
+                mustVerified={true}
+              />
+            }
           >
             <Route path="users" element={<AdminUsersPage />} />
             <Route path="category" element={<AdminCategoryPage />} />
@@ -59,6 +77,7 @@ function App() {
               <Route path="edit/:id" element={<AdminProductFormEditPage />} />
             </Route>
           </Route>
+
           <Route path="*" element={<p>Not Found</p>} />
         </Route>
       </Routes>
