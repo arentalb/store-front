@@ -38,6 +38,7 @@ export function LoginPage() {
   const onSubmit: SubmitHandler<LoginFormInputs> = async (credential) => {
     try {
       const res = await login(credential).unwrap();
+      toast.success("Login succeed");
       dispatch(setCredentials({ ...res.data }));
     } catch (error) {
       const apiError = error as TApiError;
