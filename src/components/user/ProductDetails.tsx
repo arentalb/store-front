@@ -1,5 +1,6 @@
 import { TProduct } from "../../types/TProduct";
 import { FiMinus, FiPlus } from "react-icons/fi";
+import { Loader } from "../common/Loader.tsx";
 
 interface ProductDetailsProps {
   product: TProduct;
@@ -18,6 +19,8 @@ export function ProductDetails({
   handleUpdateCartItem,
   loading,
 }: ProductDetailsProps) {
+  if (loading) return <Loader />;
+
   return (
     <div className="w-full md:w-1/2 flex flex-col gap-4">
       <h1 className="text-3xl font-bold text-gray-800">{product.name}</h1>
