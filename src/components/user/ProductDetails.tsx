@@ -19,8 +19,6 @@ export function ProductDetails({
   handleUpdateCartItem,
   loading,
 }: ProductDetailsProps) {
-  if (loading) return <Loader />;
-
   return (
     <div className="w-full md:w-1/2 flex flex-col gap-4">
       <h1 className="text-3xl font-bold text-gray-800">{product.name}</h1>
@@ -48,13 +46,15 @@ export function ProductDetails({
             <button
               onClick={() => handleUpdateCartItem(product._id, quantity - 1)}
               className="btn btn-square btn-primary"
+              disabled={loading}
             >
               <FiMinus />
             </button>
-            <p className="text-lg">{quantity}</p>
+            <p className="text-lg">{loading ? <Loader /> : quantity}</p>
             <button
               onClick={() => handleUpdateCartItem(product._id, quantity + 1)}
               className="btn btn-square btn-primary"
+              disabled={loading}
             >
               <FiPlus />
             </button>
@@ -63,6 +63,7 @@ export function ProductDetails({
           <button
             onClick={() => handleAddToCart(product)}
             className="btn btn-primary w-32"
+            disabled={loading}
           >
             Add to Cart
           </button>

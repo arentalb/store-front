@@ -64,11 +64,17 @@ export function UserProductDetailPage() {
     }
   };
 
-  const handleUpdateCartItem = async (productId: string, quantity: number) => {
+  const handleUpdateCartItem = async (
+    productId: string,
+    newQuantity: number,
+  ) => {
+    const previousQuantity = quantity;
+    setQuantity(newQuantity);
     try {
-      await updateCartItem({ productId, quantity }).unwrap();
+      await updateCartItem({ productId, quantity: newQuantity }).unwrap();
       toast.success("Cart updated");
     } catch (error) {
+      setQuantity(previousQuantity);
       const apiError = error as TApiError;
       toast.error(apiError?.data?.message || "Failed to update cart");
     }
@@ -79,7 +85,7 @@ export function UserProductDetailPage() {
     return (
       <ErrorMessage
         message={
-          apiError.data?.message || "An error occurred while fetching cart"
+          apiError.data?.message || "An error occurred while fetching product"
         }
       />
     );
@@ -98,7 +104,7 @@ export function UserProductDetailPage() {
     return <Loader />;
   }
   if (!product) {
-    return <ErrorMessage message={"No product available "} />;
+    return <ErrorMessage message={"No product available"} />;
   }
 
   return (
