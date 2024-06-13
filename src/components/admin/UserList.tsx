@@ -6,10 +6,6 @@ interface UserListProps {
 }
 
 export function UserList({ users }: UserListProps) {
-  if (!users || users.length === 0) {
-    return <div>No users found</div>;
-  }
-
   return (
     <div className="overflow-x-auto">
       <table className="table">
