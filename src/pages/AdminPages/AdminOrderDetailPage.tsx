@@ -9,6 +9,7 @@ import { Loader } from "../../components/common/Loader.tsx";
 import { OrderDetailsTable } from "../../components/admin/OrderDetailsTable";
 import { ShippingAddressTable } from "../../components/admin/ShippingAddressTable";
 import { OrderItemsTable } from "../../components/admin/OrderItemsTable";
+import { ErrorMessage } from "../../components/common/ErrorMessage.tsx";
 
 export interface IOrderStatusUpdate {
   isDelivered?: boolean;
@@ -16,8 +17,15 @@ export interface IOrderStatusUpdate {
 
 export function AdminOrderDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const { data: orderResponse, error, isLoading } = useGetOrderDetailQuery(id!);
-  const [updateOrderStatus] = useUpdateOrderStatusMutation();
+  const {
+    data: orderResponse,
+    error: orderError,
+    isLoading: isOrderLoading,
+    isError: isOrderError,
+  } = useGetOrderDetailQuery(id!);
+
+  const [updateOrderStatus, { isLoading: isOrderStatusChanging }] =
+    useUpdateOrderStatusMutation();
 
   const order = orderResponse?.data;
 
@@ -31,36 +39,40 @@ export function AdminOrderDetailPage() {
     }
   };
 
-  if (isLoading) {
-    return <Loader />;
+  if (isOrderError) {
+    const apiError = orderError as TApiError;
+    return (
+      <ErrorMessage
+        message={
+          apiError.data?.message || "An error occurred while fetching order"
+        }
+      />
+    );
   }
 
-  if (error) {
-    const apiError = error as TApiError;
-    toast.error(apiError?.data?.message || "An error occurred");
-    return <div>Error loading orders</div>;
+  if (isOrderLoading) return <Loader />;
+
+  if (!order) {
+    return <ErrorMessage message={"No order available "} />;
   }
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-6">Order Details</h1>
-      {order && (
-        <>
-          <OrderDetailsTable order={order} />
-          <ShippingAddressTable order={order} />
-          <OrderItemsTable order={order} />
-          <div className="flex space-x-4">
-            {!order.isDelivered && (
-              <button
-                onClick={() => handleStatusUpdate({ isDelivered: true })}
-                className="btn btn-success"
-              >
-                Mark as Delivered
-              </button>
-            )}
-          </div>
-        </>
-      )}
+      <OrderDetailsTable order={order} />
+      <ShippingAddressTable order={order} />
+      <OrderItemsTable order={order} />
+      <div className="flex space-x-4">
+        {!order.isDelivered && (
+          <button
+            onClick={() => handleStatusUpdate({ isDelivered: true })}
+            className="btn btn-success"
+            disabled={isOrderStatusChanging}
+          >
+            {isOrderStatusChanging ? "Marking" : "Mark as Delivered"}
+          </button>
+        )}
+      </div>
     </div>
   );
 }
