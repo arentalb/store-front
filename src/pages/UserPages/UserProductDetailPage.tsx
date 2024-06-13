@@ -13,30 +13,38 @@ import {
 import { Loader } from "../../components/common/Loader.tsx";
 import { ProductImages } from "../../components/user/ProductImages";
 import { ProductDetails } from "../../components/user/ProductDetails";
+import { TCart } from "../../types/TCart.ts";
+import { ErrorMessage } from "../../components/common/ErrorMessage.tsx";
 
 export function UserProductDetailPage() {
   const { id } = useParams<{ id: string }>();
   const {
-    data: productData,
+    data: productResponse,
     error: productError,
     isError: isProductError,
     isLoading: isProductLoading,
   } = useGetProductByIdQuery(id!);
-  const product = productData?.data;
 
-  const { data: cartData, isLoading: isCartLoading } = useGetCartQuery();
-  const [addToCart, { error: addToCartError }] = useAddToCartMutation();
-  const [updateCartItem, { error: updateCartError }] =
+  const {
+    data: cartResponse,
+    error: cartError,
+    isError: isCartError,
+    isLoading: isCartLoading,
+  } = useGetCartQuery();
+
+  const [addToCart, { isLoading: isAddToCartLoading }] = useAddToCartMutation();
+  const [updateCartItem, { isLoading: isUpdateCartLoading }] =
     useUpdateCartItemMutation();
+
+  const product: TProduct | undefined = productResponse?.data;
+  const cart: TCart | undefined = cartResponse?.data;
 
   const [isProductAdded, setIsProductAdded] = useState(false);
   const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
-    if (cartData?.data?.items) {
-      const existingProduct = cartData.data.items.find(
-        (item) => item.product === id,
-      );
+    if (cart?.items) {
+      const existingProduct = cart?.items.find((item) => item.product === id);
       if (existingProduct) {
         setQuantity(existingProduct.quantity);
         setIsProductAdded(true);
@@ -44,14 +52,14 @@ export function UserProductDetailPage() {
         setIsProductAdded(false);
       }
     }
-  }, [cartData, id]);
+  }, [cart, id]);
 
   const handleAddToCart = async (product: TProduct) => {
     try {
       await addToCart({ productId: product._id, quantity: 1 }).unwrap();
       toast.success(`${product.name} added to cart`);
-    } catch (err) {
-      const apiError = err as TApiError;
+    } catch (error) {
+      const apiError = error as TApiError;
       toast.error(apiError?.data?.message || "Failed to add to cart");
     }
   };
@@ -60,61 +68,52 @@ export function UserProductDetailPage() {
     try {
       await updateCartItem({ productId, quantity }).unwrap();
       toast.success("Cart updated");
-    } catch (err) {
-      const apiError = err as TApiError;
+    } catch (error) {
+      const apiError = error as TApiError;
       toast.error(apiError?.data?.message || "Failed to update cart");
     }
   };
 
-  if (isCartLoading) {
-    return <Loader />;
-  }
   if (isProductError) {
     const apiError = productError as TApiError;
-    toast.error(`Error loading product details: ${apiError?.data?.message}`);
     return (
-      <div className="text-center text-red-500">
-        Error loading product details: {apiError?.data?.message}
-      </div>
+      <ErrorMessage
+        message={
+          apiError.data?.message || "An error occurred while fetching cart"
+        }
+      />
     );
   }
-
-  if (addToCartError) {
-    const apiError = addToCartError as TApiError;
+  if (isCartError) {
+    const apiError = cartError as TApiError;
     return (
-      <div className="text-center text-red-500">
-        Error: {apiError?.data?.message}
-      </div>
+      <ErrorMessage
+        message={
+          apiError.data?.message || "An error occurred while fetching cart"
+        }
+      />
     );
   }
-
-  if (updateCartError) {
-    const apiError = updateCartError as TApiError;
-    return (
-      <div className="text-center text-red-500">
-        Error: {apiError?.data?.message}
-      </div>
-    );
+  if (!product) {
+    return <ErrorMessage message={"No product available "} />;
+  }
+  if (isCartLoading || isProductLoading) {
+    return <Loader />;
   }
 
   return (
     <div className="container mx-auto p-4">
-      {isProductLoading ? (
-        <Loader />
-      ) : (
-        product && (
-          <div className="flex flex-col gap-8 md:flex-row">
-            <ProductImages product={product} />
-            <ProductDetails
-              product={product}
-              isProductAdded={isProductAdded}
-              quantity={quantity}
-              handleAddToCart={handleAddToCart}
-              handleUpdateCartItem={handleUpdateCartItem}
-            />
-          </div>
-        )
-      )}
+      <div className="flex flex-col gap-8 md:flex-row">
+        <ProductImages product={product} />
+        <ProductDetails
+          product={product}
+          isProductAdded={isProductAdded}
+          quantity={quantity}
+          handleAddToCart={handleAddToCart}
+          handleUpdateCartItem={handleUpdateCartItem}
+          loading={isAddToCartLoading || isUpdateCartLoading}
+        />
+      </div>
     </div>
   );
 }

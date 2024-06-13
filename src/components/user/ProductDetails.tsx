@@ -7,6 +7,7 @@ interface ProductDetailsProps {
   quantity: number;
   handleAddToCart: (product: TProduct) => void;
   handleUpdateCartItem: (productId: string, quantity: number) => void;
+  loading: boolean;
 }
 
 export function ProductDetails({
@@ -15,6 +16,7 @@ export function ProductDetails({
   quantity,
   handleAddToCart,
   handleUpdateCartItem,
+  loading,
 }: ProductDetailsProps) {
   return (
     <div className="w-full md:w-1/2 flex flex-col gap-4">
