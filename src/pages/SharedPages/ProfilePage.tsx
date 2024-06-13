@@ -8,7 +8,6 @@ import { useDispatch } from "react-redux";
 import { setCredentials } from "../../redux/auth/authSlice.ts";
 import { Loader } from "../../components/common/Loader.tsx";
 import { toast } from "react-toastify";
-import { useEffect } from "react";
 import {
   ProfileUpdateForm,
   TProfile,
@@ -18,27 +17,21 @@ import {
   TPassword,
 } from "../../components/profile/PasswordChangeForm";
 import { SubmitHandler } from "react-hook-form";
+import { ErrorMessage } from "../../components/common/ErrorMessage.tsx";
 
 export function ProfilePage() {
   const dispatch = useDispatch();
   const {
-    data: profileData,
+    data: profileResponse,
     isLoading: profileLoading,
-    isError: profileError,
-    error: profileFetchError,
+    isError: profileIsError,
+    error: profileError,
   } = useGetProfileQuery();
 
   const [updateProfile, { isLoading: updateProfileLoading }] =
     useUpdateProfileMutation();
   const [changePassword, { isLoading: changePasswordLoading }] =
     useChangePasswordMutation();
-
-  useEffect(() => {
-    if (profileError) {
-      const apiError = profileFetchError as TApiError;
-      toast.error(apiError.data.message || "Failed to fetch profile");
-    }
-  }, [profileError, profileFetchError]);
 
   const onUpdateProfile: SubmitHandler<TProfile> = async (newUser) => {
     try {
@@ -61,6 +54,16 @@ export function ProfilePage() {
     }
   };
 
+  if (profileIsError) {
+    const apiError = profileError as TApiError;
+    return (
+      <ErrorMessage
+        message={
+          apiError.data?.message || "An error occurred while fetching profile"
+        }
+      />
+    );
+  }
   if (profileLoading) {
     return <Loader />;
   }
@@ -71,9 +74,9 @@ export function ProfilePage() {
         <h1 className="text-2xl font-bold mb-8">Update Profile</h1>
 
         <div className="max-w-md flex flex-col gap-4">
-          {profileData && (
+          {profileResponse && (
             <ProfileUpdateForm
-              initialValues={profileData.data}
+              initialValues={profileResponse.data}
               onSubmit={onUpdateProfile}
               isLoading={updateProfileLoading}
             />
