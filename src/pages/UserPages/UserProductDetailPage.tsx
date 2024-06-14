@@ -25,12 +25,7 @@ export function UserProductDetailPage() {
     isLoading: isProductLoading,
   } = useGetProductByIdQuery(id!);
 
-  const {
-    data: cartResponse,
-    error: cartError,
-    isError: isCartError,
-    isLoading: isCartLoading,
-  } = useGetCartQuery();
+  const { data: cartResponse, isLoading: isCartLoading } = useGetCartQuery();
 
   const [addToCart, { isLoading: isAddToCartLoading }] = useAddToCartMutation();
   const [updateCartItem, { isLoading: isUpdateCartLoading }] =
@@ -90,16 +85,7 @@ export function UserProductDetailPage() {
       />
     );
   }
-  if (isCartError) {
-    const apiError = cartError as TApiError;
-    return (
-      <ErrorMessage
-        message={
-          apiError.data?.message || "An error occurred while fetching cart"
-        }
-      />
-    );
-  }
+
   if (isCartLoading || isProductLoading) {
     return <Loader />;
   }
