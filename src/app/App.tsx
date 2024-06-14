@@ -24,14 +24,15 @@ import { VerifyEmailPage } from "../pages/SharedPages/VerifyEmailPage.tsx";
 import { ResetPasswordRequestPage } from "../pages/SharedPages/ResetPasswordRequestPage.tsx";
 import { ResetPasswordConfirmPage } from "../pages/SharedPages/ResetPasswordConfirmPage.tsx";
 import { PaymentSuccessPage } from "../pages/UserPages/PaymentSuccessPage.tsx";
+import { AdminDashboardPage } from "../pages/AdminPages/AdminDashboardPage.tsx";
+import RoleBasedRedirect from "../utils/RoleBasedRedirect.tsx"; // Import the new component
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<AppLayout />}>
-          <Route index element={<Navigate to="home" replace />} />
-          <Route path="home" element={<HomePage />} />
+          <Route index element={<RoleBasedRedirect />} />{" "}
           <Route path="register" element={<RegisterPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route
@@ -39,12 +40,10 @@ function App() {
             element={<SendVerifyEmailPage />}
           />
           <Route path="verify-email-confirm" element={<VerifyEmailPage />} />
-
           <Route
             path="reset-password-request"
             element={<ResetPasswordRequestPage />}
           />
-
           <Route
             path="reset-password-confirm"
             element={<ResetPasswordConfirmPage />}
@@ -56,11 +55,11 @@ function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/products" element={<UserProductsPage />} />
           </Route>
-
           {/* Routes for verified users */}
           <Route
             element={<PrivateRoute roles={["User"]} mustVerified={true} />}
           >
+            <Route path="home" element={<HomePage />} />
             <Route path="/product/:id" element={<UserProductDetailPage />} />
             <Route path="/cart" element={<UserCartPage />} />
             <Route path="/checkout" element={<UserCheckoutPage />} />
@@ -68,7 +67,6 @@ function App() {
             <Route path="/orders/:id" element={<UserOrderDetailPage />} />
             <Route path="/success" element={<PaymentSuccessPage />} />
           </Route>
-
           {/* Admin Routes for verified users */}
           <Route
             path="/admin"
@@ -79,6 +77,7 @@ function App() {
               />
             }
           >
+            <Route path="dashboard" element={<AdminDashboardPage />} />
             <Route path="users" element={<AdminUsersPage />} />
             <Route path="category" element={<AdminCategoryPage />} />
             <Route path="orders" element={<AdminOrderListPage />} />
@@ -90,7 +89,6 @@ function App() {
               <Route path="edit/:id" element={<AdminProductFormEditPage />} />
             </Route>
           </Route>
-
           <Route path="*" element={<p>Not Found</p>} />
         </Route>
       </Routes>
