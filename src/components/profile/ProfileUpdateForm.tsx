@@ -1,6 +1,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Loader } from "../common/Loader.tsx";
 import { FormInput } from "../common/FormInput.tsx";
+import { emailPattern } from "../../utils/validation.ts";
 
 export interface TProfile {
   username: string;
@@ -32,6 +33,7 @@ export function ProfileUpdateForm({
         type="email"
         registration={register("email", {
           required: "Email is required",
+          pattern: emailPattern,
         })}
         error={errors.email}
         placeHolder="Enter your email"

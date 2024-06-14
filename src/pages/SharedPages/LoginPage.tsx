@@ -9,6 +9,7 @@ import { RootState } from "../../redux/store.ts";
 import { TApiError } from "../../types/TApiError.ts";
 import { Loader } from "../../components/common/Loader.tsx";
 import { FormInput } from "../../components/common/FormInput.tsx";
+import { emailPattern, passwordMinLength } from "../../utils/validation";
 
 interface LoginFormInputs {
   email: string;
@@ -38,7 +39,7 @@ export function LoginPage() {
   const onSubmit: SubmitHandler<LoginFormInputs> = async (credential) => {
     try {
       const res = await login(credential).unwrap();
-      toast.success("Login succeed");
+      toast.success("Login succeeded");
       dispatch(setCredentials({ ...res.data }));
     } catch (error) {
       const apiError = error as TApiError;
@@ -50,15 +51,19 @@ export function LoginPage() {
     <div className={"py-20"}>
       <h1 className={"text-3xl font-bold mb-8"}>Login form</h1>
 
-      <form className={"max-w-md flex flex-col gap-6"}>
+      <form
+        className={"max-w-md flex flex-col gap-6"}
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <FormInput
           type="email"
           registration={register("email", {
             required: "Email is required",
+            pattern: emailPattern,
           })}
-          error={errors.password}
+          error={errors.email}
           placeHolder="Enter your email"
-          id="password"
+          id="email"
           icon={
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -76,8 +81,9 @@ export function LoginPage() {
           type="password"
           registration={register("password", {
             required: "Password is required",
+            minLength: passwordMinLength,
           })}
-          error={errors.email}
+          error={errors.password}
           placeHolder="Enter your password"
           id="password"
           icon={
@@ -95,13 +101,8 @@ export function LoginPage() {
             </svg>
           }
         />
-        <button
-          className="btn btn-neutral"
-          disabled={isLoading}
-          onClick={handleSubmit(onSubmit)}
-          type={"button"}
-        >
-          {isLoading ? <Loader /> : "login"}
+        <button className="btn btn-neutral" disabled={isLoading} type="submit">
+          {isLoading ? <Loader /> : "Login"}
         </button>
         <div className="text-center text-sm">
           <p>
@@ -116,7 +117,7 @@ export function LoginPage() {
             <div className="flex-grow border-t border-gray-400"></div>
           </div>
           <p>
-            You forget your password?{" "}
+            Forgot your password?{" "}
             <Link
               className="text-info hover:underline"
               to="/reset-password-request"

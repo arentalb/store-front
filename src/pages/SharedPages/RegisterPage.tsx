@@ -8,6 +8,11 @@ import { TApiError } from "../../types/TApiError.ts";
 import { Loader } from "../../components/common/Loader.tsx";
 import { FormInput } from "../../components/common/FormInput.tsx";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  emailPattern,
+  passwordMinLength,
+  strongPasswordPattern,
+} from "../../utils/validation.ts";
 
 interface RegisterFormInputs {
   email: string;
@@ -53,7 +58,10 @@ export function RegisterPage() {
       <form className={"max-w-md flex flex-col gap-4"}>
         <FormInput
           type="email"
-          registration={register("email", { required: "Email is required" })}
+          registration={register("email", {
+            required: "Email is required",
+            pattern: emailPattern,
+          })}
           error={errors.email}
           placeHolder="Enter your email"
           id="username"
@@ -93,6 +101,8 @@ export function RegisterPage() {
           type="password"
           registration={register("password", {
             required: "Password is required",
+            minLength: passwordMinLength,
+            pattern: strongPasswordPattern,
           })}
           error={errors.password}
           placeHolder="Enter your password"

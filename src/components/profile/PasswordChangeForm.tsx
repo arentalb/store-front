@@ -1,6 +1,10 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Loader } from "../common/Loader.tsx";
 import { FormInput } from "../common/FormInput.tsx";
+import {
+  passwordMinLength,
+  strongPasswordPattern,
+} from "../../utils/validation.ts";
 
 export interface TPassword {
   oldPassword: string;
@@ -61,6 +65,8 @@ export function PasswordChangeForm({
         type="password"
         registration={register("newPassword", {
           required: "New Password is required",
+          minLength: passwordMinLength,
+          pattern: strongPasswordPattern,
         })}
         error={errors.newPassword}
         placeHolder="Enter your new password"
