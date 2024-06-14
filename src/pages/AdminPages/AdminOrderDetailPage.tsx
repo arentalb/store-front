@@ -6,10 +6,11 @@ import {
 } from "../../redux/order/orderApiSlice";
 import { useParams } from "react-router-dom";
 import { Loader } from "../../components/common/Loader.tsx";
-import { OrderDetailsTable } from "../../components/admin/OrderDetailsTable";
-import { ShippingAddressTable } from "../../components/admin/ShippingAddressTable";
-import { OrderItemsTable } from "../../components/admin/OrderItemsTable";
+
 import { ErrorMessage } from "../../components/common/ErrorMessage.tsx";
+import { OrderDetailsTable } from "../../components/common/OrderDetailsTable.tsx";
+import { ShippingAddressTable } from "../../components/common/ShippingAddressTable.tsx";
+import { OrderItemsTable } from "../../components/common/OrderItemsTable.tsx";
 
 export interface IOrderStatusUpdate {
   isDelivered?: boolean;
@@ -62,6 +63,7 @@ export function AdminOrderDetailPage() {
       <OrderDetailsTable order={order} />
       <ShippingAddressTable order={order} />
       <OrderItemsTable order={order} />
+
       <div className="flex space-x-4">
         {!order.isDelivered && (
           <button

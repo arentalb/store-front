@@ -4,10 +4,11 @@ import { useCreateCheckoutSessionMutation } from "../../redux/payment/paymentApi
 import { TApiError } from "../../types/TApiError.ts";
 import { TOrder } from "../../types/TOrder.ts";
 import { Loader } from "../../components/common/Loader.tsx";
-import { OrderDetailsTable } from "../../components/user/OrderDetailsTable.tsx";
-import { OrderItemsTable } from "../../components/user/OrderItemsTable.tsx";
+import { OrderDetailsTable } from "../../components/common/OrderDetailsTable.tsx";
+import { OrderItemsTable } from "../../components/common/OrderItemsTable.tsx";
 import { ErrorMessage } from "../../components/common/ErrorMessage.tsx";
 import { loadStripe } from "@stripe/stripe-js";
+import { ShippingAddressTable } from "../../components/common/ShippingAddressTable.tsx";
 
 export function UserOrderDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -72,8 +73,11 @@ export function UserOrderDetailPage() {
       {order && (
         <>
           <h2 className="text-2xl font-semibold mb-2">Order ID: {order._id}</h2>
+
           <OrderDetailsTable order={order} />
+          <ShippingAddressTable order={order} />
           <OrderItemsTable order={order} />
+
           {order.isPaid ? (
             ""
           ) : (

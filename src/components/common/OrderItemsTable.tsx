@@ -1,4 +1,4 @@
-import { TOrder } from "../../types/TOrder";
+import { TOrder } from "../../types/TOrder.ts";
 
 interface OrderItemsTableProps {
   order: TOrder;
