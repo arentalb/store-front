@@ -10,15 +10,15 @@ export function ProductImages({ product }: ProductImagesProps) {
       <img
         src={product.coverImage}
         alt={product.name}
-        className="w-full rounded-lg shadow-md"
+        className="w-full rounded-lg shadow-md object-cover h-64 md:h-64"
       />
-      <div className="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-4">
         {product.images.map((image, index) => (
           <img
             key={index}
             src={image}
             alt={`${product.name} ${index + 1}`}
-            className="w-full rounded-lg shadow-md"
+            className="w-full rounded-lg shadow-md object-cover h-32 sm:h-32"
           />
         ))}
       </div>
