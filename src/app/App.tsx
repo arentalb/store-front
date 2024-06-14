@@ -23,6 +23,7 @@ import { SendVerifyEmailPage } from "../pages/SharedPages/SendVerifyEmailPage.ts
 import { VerifyEmailPage } from "../pages/SharedPages/VerifyEmailPage.tsx";
 import { ResetPasswordRequestPage } from "../pages/SharedPages/ResetPasswordRequestPage.tsx";
 import { ResetPasswordConfirmPage } from "../pages/SharedPages/ResetPasswordConfirmPage.tsx";
+import { PaymentSuccessPage } from "../pages/UserPages/PaymentSuccessPage.tsx";
 
 function App() {
   return (
@@ -65,6 +66,7 @@ function App() {
             <Route path="/checkout" element={<UserCheckoutPage />} />
             <Route path="/orders" element={<UserOrdersPage />} />
             <Route path="/orders/:id" element={<UserOrderDetailPage />} />
+            <Route path="/success" element={<PaymentSuccessPage />} />
           </Route>
 
           {/* Admin Routes for verified users */}
