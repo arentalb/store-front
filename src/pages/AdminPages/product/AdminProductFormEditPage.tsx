@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
@@ -11,10 +11,11 @@ import {
 import { TApiError } from "../../../types/TApiError.ts";
 import { Loader } from "../../../components/common/Loader.tsx";
 import { FormSelect } from "../../../components/admin/FormSelect";
-import { ImagePreview } from "../../../components/admin/ImagePreview";
-import { FiX } from "react-icons/fi";
 import { FormInput } from "../../../components/common/FormInput.tsx";
 import { ErrorMessage } from "../../../components/common/ErrorMessage.tsx";
+import { CoverImagePreview } from "../../../components/admin/CoverImagePreview.tsx";
+import { ImagePreview } from "../../../components/admin/ImagePreview.tsx";
+import { useImagePreview } from "../../../hooks/useImagePreview";
 
 interface IProductFormInputs {
   name: string;
@@ -36,7 +37,6 @@ export function AdminProductFormEditPage() {
     isError: isCategoryError,
     isLoading: isCategoryLoading,
   } = useGetCategoriesQuery();
-
   const {
     data: productResponse,
     isLoading: isProductLoading,
@@ -46,9 +46,9 @@ export function AdminProductFormEditPage() {
 
   const [deleteProduct, { isLoading: isDeleting }] = useDeleteProductMutation();
   const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
-
   const categories = categoryResponse?.data || [];
   const product = productResponse?.data;
+
   const {
     register,
     handleSubmit,
@@ -56,6 +56,16 @@ export function AdminProductFormEditPage() {
     getValues,
     formState: { errors },
   } = useForm<IProductFormInputs>();
+  const {
+    coverImagePreview,
+    setCoverImagePreview,
+    imagesPreview,
+    setImagesPreview,
+    deletedImages,
+    handleCoverImageChange,
+    handleImagesChange,
+    handleRemoveImage,
+  } = useImagePreview();
 
   const onEdit: SubmitHandler<IProductFormInputs> = async (product) => {
     const formData = new FormData();
@@ -68,13 +78,10 @@ export function AdminProductFormEditPage() {
     if (product.coverImage[0]) {
       formData.append("coverImage", product.coverImage[0]);
     }
-    Array.from(product.images).forEach((image) => {
-      formData.append("images", image);
-    });
-
-    deletedImages.forEach((image) => {
-      formData.append("deletedImages", image);
-    });
+    Array.from(product.images).forEach((image) =>
+      formData.append("images", image),
+    );
+    deletedImages.forEach((image) => formData.append("deletedImages", image));
 
     if (id) {
       try {
@@ -113,7 +120,6 @@ export function AdminProductFormEditPage() {
         coverImage,
         images,
       } = product;
-
       setValue("name", name);
       setValue("description", description);
       setValue("category", category.name);
@@ -124,11 +130,13 @@ export function AdminProductFormEditPage() {
       setCoverImagePreview(coverImage);
       setImagesPreview(images);
     }
-  }, [product, productResponse, setValue]);
-
-  const [coverImagePreview, setCoverImagePreview] = useState<string | null>(
-    null,
-  );
+  }, [
+    product,
+    productResponse,
+    setCoverImagePreview,
+    setImagesPreview,
+    setValue,
+  ]);
 
   function getCategoryId() {
     const category = categories?.find(
@@ -136,40 +144,6 @@ export function AdminProductFormEditPage() {
     );
     return category ? category._id : "";
   }
-
-  const [imagesPreview, setImagesPreview] = useState<string[]>([]);
-  const [deletedImages, setDeletedImages] = useState<string[]>([]);
-
-  const handleCoverImageChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setCoverImagePreview(URL.createObjectURL(file));
-    }
-  };
-
-  const handleImagesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files) {
-      const previewUrls = Array.from(files).map((file) =>
-        URL.createObjectURL(file),
-      );
-      setImagesPreview((prev) => [...prev, ...previewUrls]);
-    }
-  };
-
-  const handleRemoveImage = (imageUrl: string) => {
-    setImagesPreview((prev) => prev.filter((url) => url !== imageUrl));
-    setDeletedImages((prev) => [...prev, imageUrl]);
-  };
-
-  const handleRemoveCoverImage = () => {
-    if (coverImagePreview) {
-      setDeletedImages((prev) => [...prev, coverImagePreview]);
-      setCoverImagePreview(null);
-    }
-  };
 
   if (isCategoryError) {
     const apiError = categoryError as TApiError;
@@ -209,7 +183,6 @@ export function AdminProductFormEditPage() {
           })}
           error={errors.name}
         />
-
         <label className="form-control w-full sm:max-w-xs">
           <div className="label">
             <span className="label-text">Product description</span>
@@ -224,19 +197,17 @@ export function AdminProductFormEditPage() {
             <p className="text-red-500">{errors.description.message}</p>
           )}
         </label>
-
         <FormSelect
           label="Product category"
           registration={register("category", {
             required: "Product category is required",
           })}
-          options={
-            categories?.map((cat) => ({ value: cat.name, label: cat.name })) ||
-            []
-          }
+          options={categories.map((cat) => ({
+            value: cat.name,
+            label: cat.name,
+          }))}
           error={errors.category}
         />
-
         <FormInput
           label="Product price"
           type="number"
@@ -245,7 +216,6 @@ export function AdminProductFormEditPage() {
           })}
           error={errors.price}
         />
-
         <FormInput
           label="Product stock"
           type="number"
@@ -254,7 +224,6 @@ export function AdminProductFormEditPage() {
           })}
           error={errors.stock}
         />
-
         <FormInput
           label="Product tags (comma separated)"
           type="text"
@@ -263,7 +232,6 @@ export function AdminProductFormEditPage() {
           })}
           error={errors.tags}
         />
-
         <div>
           <label className="form-control w-full sm:max-w-xs mb-4">
             <div className="label">
@@ -279,24 +247,8 @@ export function AdminProductFormEditPage() {
               <p className="text-red-500">{errors.coverImage.message}</p>
             )}
           </label>
-          {coverImagePreview && (
-            <div className="relative mt-4 h-40 w-40">
-              <img
-                src={`${coverImagePreview}`}
-                alt="Cover Preview"
-                className="h-full w-full object-cover"
-              />
-              <button
-                type="button"
-                className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
-                onClick={handleRemoveCoverImage}
-              >
-                <FiX />
-              </button>
-            </div>
-          )}
+          {coverImagePreview && <CoverImagePreview src={coverImagePreview} />}
         </div>
-
         <div>
           <label className="form-control w-full sm:max-w-xs mb-4">
             <div className="label">
@@ -324,7 +276,6 @@ export function AdminProductFormEditPage() {
           </div>
         </div>
       </div>
-
       <div className="my-10 flex gap-4 flex-wrap">
         <button
           type="button"

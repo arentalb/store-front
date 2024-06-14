@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { toast } from "react-toastify";
 import { useGetCategoriesQuery } from "../../../redux/category/categoryApiSlice.ts";
 import { useCreateProductMutation } from "../../../redux/product/productApiSlice.ts";
@@ -6,9 +5,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { TApiError } from "../../../types/TApiError.ts";
 import { Loader } from "../../../components/common/Loader.tsx";
 import { FormSelect } from "../../../components/admin/FormSelect";
-import { ImagePreview } from "../../../components/admin/ImagePreview";
 import { FormInput } from "../../../components/common/FormInput.tsx";
 import { ErrorMessage } from "../../../components/common/ErrorMessage.tsx";
+import { CoverImagePreview } from "../../../components/admin/CoverImagePreview.tsx";
+import { ImagePreview } from "../../../components/admin/ImagePreview.tsx";
+import { useImagePreview } from "../../../hooks/useImagePreview";
 
 interface IProductFormInputs {
   name: string;
@@ -28,11 +29,8 @@ export function AdminProductFormAddPage() {
     isError: isCategoryError,
     isLoading: isCategoryLoading,
   } = useGetCategoriesQuery();
-
   const [createProduct, { isLoading: isCreating }] = useCreateProductMutation();
-
   const categories = categoriesResponse?.data || [];
-
   const {
     register,
     handleSubmit,
@@ -41,29 +39,15 @@ export function AdminProductFormAddPage() {
     formState: { errors },
   } = useForm<IProductFormInputs>();
 
-  const [coverImagePreview, setCoverImagePreview] = useState<string | null>(
-    null,
-  );
-  const [imagesPreview, setImagesPreview] = useState<string[]>([]);
-
-  const handleCoverImageChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setCoverImagePreview(URL.createObjectURL(file));
-    }
-  };
-
-  const handleImagesChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files;
-    if (files) {
-      const previewUrls = Array.from(files).map((file) =>
-        URL.createObjectURL(file),
-      );
-      setImagesPreview(previewUrls);
-    }
-  };
+  const {
+    coverImagePreview,
+    imagesPreview,
+    setImagesPreview,
+    handleCoverImageChange,
+    handleImagesChange,
+    handleRemoveImage,
+    handleRemoveCoverImage,
+  } = useImagePreview();
 
   const onCreate: SubmitHandler<IProductFormInputs> = async (product) => {
     const formData = new FormData();
@@ -72,18 +56,19 @@ export function AdminProductFormAddPage() {
     formData.append("price", product.price.toString());
     formData.append("category", getCategoryId());
     formData.append("stock", product.stock.toString());
-    formData.append("coverImage", product.coverImage[0]);
-    Array.from(product.images).forEach((image) => {
-      formData.append("images", image);
-    });
-    formData.append("tags", product.tags);
     formData.append("availableStock", product.stock.toString());
+
+    formData.append("coverImage", product.coverImage[0]);
+    Array.from(product.images).forEach((image) =>
+      formData.append("images", image),
+    );
+    formData.append("tags", product.tags);
 
     try {
       await createProduct(formData).unwrap();
       toast.success("Product created successfully");
       reset();
-      setCoverImagePreview(null);
+      handleRemoveCoverImage();
       setImagesPreview([]);
     } catch (error) {
       const apiError = error as TApiError;
@@ -114,7 +99,7 @@ export function AdminProductFormAddPage() {
 
   return (
     <form>
-      <h1 className="text-2xl mb-4">Create New Product </h1>
+      <h1 className="text-2xl mb-4">Create New Product</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-2">
         <FormInput
           label="Product name"
@@ -124,7 +109,6 @@ export function AdminProductFormAddPage() {
           })}
           error={errors.name}
         />
-
         <FormInput
           label="Product in stock"
           type="number"
@@ -133,7 +117,6 @@ export function AdminProductFormAddPage() {
           })}
           error={errors.stock}
         />
-
         <FormInput
           label="Product price"
           type="number"
@@ -142,19 +125,17 @@ export function AdminProductFormAddPage() {
           })}
           error={errors.price}
         />
-
         <FormSelect
           label="Product category"
           registration={register("category", {
             required: "Product category is required",
           })}
-          options={
-            categories?.map((cat) => ({ value: cat.name, label: cat.name })) ||
-            []
-          }
+          options={categories.map((cat) => ({
+            value: cat.name,
+            label: cat.name,
+          }))}
           error={errors.category}
         />
-
         <label className="form-control sm:max-w-xs">
           <div className="label">
             <span className="label-text">Product description</span>
@@ -169,7 +150,6 @@ export function AdminProductFormAddPage() {
             <p className="text-red-500">{errors.description.message}</p>
           )}
         </label>
-
         <FormInput
           label="Product tags (comma separated)"
           type="text"
@@ -178,7 +158,6 @@ export function AdminProductFormAddPage() {
           })}
           error={errors.tags}
         />
-
         <div>
           <label className="form-control w-full sm:max-w-xs mb-4">
             <div className="label">
@@ -196,9 +175,8 @@ export function AdminProductFormAddPage() {
               <p className="text-red-500">{errors.coverImage.message}</p>
             )}
           </label>
-          {coverImagePreview && <ImagePreview src={coverImagePreview} />}
+          {coverImagePreview && <CoverImagePreview src={coverImagePreview} />}
         </div>
-
         <div>
           <label className="form-control w-full sm:max-w-xs mb-4">
             <div className="label">
@@ -219,12 +197,15 @@ export function AdminProductFormAddPage() {
           </label>
           <div className="mt-4 flex flex-wrap gap-4">
             {imagesPreview.map((src, index) => (
-              <ImagePreview key={index} src={src} />
+              <ImagePreview
+                key={index}
+                src={src}
+                onRemove={() => handleRemoveImage(src)}
+              />
             ))}
           </div>
         </div>
       </div>
-
       <div className="my-10 flex gap-4 flex-wrap">
         <button
           type="button"

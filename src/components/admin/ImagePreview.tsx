@@ -1,3 +1,5 @@
+import { FiX } from "react-icons/fi";
+
 interface ImagePreviewProps {
   src: string;
   onRemove?: () => void;
@@ -6,14 +8,18 @@ interface ImagePreviewProps {
 export function ImagePreview({ src, onRemove }: ImagePreviewProps) {
   return (
     <div className="relative h-20 w-20">
-      <img src={src} alt="Preview" className="h-full w-full object-cover" />
+      <img
+        src={src}
+        alt="Preview"
+        className="h-full w-full object-cover rounded-md"
+      />
       {onRemove && (
         <button
           type="button"
-          className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1"
+          className="absolute top-0 right-0 m-[2px] bg-red-500 text-white rounded-full p-1"
           onClick={onRemove}
         >
-          X
+          <FiX />
         </button>
       )}
     </div>
