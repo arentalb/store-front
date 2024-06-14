@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { TProduct } from "../../types/TProduct";
+import { TProduct } from "../../types/TProduct.ts";
 
 interface ProductProps {
   product: TProduct;

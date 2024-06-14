@@ -8,9 +8,9 @@ import { useParams } from "react-router-dom";
 import { Loader } from "../../components/common/Loader.tsx";
 
 import { ErrorMessage } from "../../components/common/ErrorMessage.tsx";
-import { OrderDetailsTable } from "../../components/common/OrderDetailsTable.tsx";
-import { ShippingAddressTable } from "../../components/common/ShippingAddressTable.tsx";
-import { OrderItemsTable } from "../../components/common/OrderItemsTable.tsx";
+import { OrderDetailsTable } from "../../components/shared/OrderDetailsTable.tsx";
+import { ShippingAddressTable } from "../../components/shared/ShippingAddressTable.tsx";
+import { OrderItemsTable } from "../../components/shared/OrderItemsTable.tsx";
 
 export interface IOrderStatusUpdate {
   isDelivered?: boolean;

@@ -4,11 +4,11 @@ import { useCreateCheckoutSessionMutation } from "../../redux/payment/paymentApi
 import { TApiError } from "../../types/TApiError.ts";
 import { TOrder } from "../../types/TOrder.ts";
 import { Loader } from "../../components/common/Loader.tsx";
-import { OrderDetailsTable } from "../../components/common/OrderDetailsTable.tsx";
-import { OrderItemsTable } from "../../components/common/OrderItemsTable.tsx";
+import { OrderDetailsTable } from "../../components/shared/OrderDetailsTable.tsx";
+import { OrderItemsTable } from "../../components/shared/OrderItemsTable.tsx";
 import { ErrorMessage } from "../../components/common/ErrorMessage.tsx";
 import { loadStripe } from "@stripe/stripe-js";
-import { ShippingAddressTable } from "../../components/common/ShippingAddressTable.tsx";
+import { ShippingAddressTable } from "../../components/shared/ShippingAddressTable.tsx";
 
 export function UserOrderDetailPage() {
   const { id } = useParams<{ id: string }>();

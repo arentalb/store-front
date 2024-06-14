@@ -3,7 +3,7 @@ import { useGetNewProductsQuery } from "../../redux/product/productApiSlice.ts";
 import { TApiError } from "../../types/TApiError.ts";
 import { useGetCategoriesQuery } from "../../redux/category/categoryApiSlice.ts";
 import { Loader } from "../../components/common/Loader.tsx";
-import { Product } from "../../components/common/Product.tsx";
+import { Product } from "../../components/shared/Product.tsx";
 import { ErrorMessage } from "../../components/common/ErrorMessage.tsx";
 import { EmptyMessage } from "../../components/common/EmptyMessage.tsx";
 import { TCategory } from "../../types/TCategory.ts";
