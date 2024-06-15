@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import { getUser } from "../redux/auth/authSlice.ts";
+import { ADMIN, SUPER_ADMIN } from "../constants/roles.ts";
 
 const RoleBasedRedirect = () => {
   const user = useSelector(getUser);
@@ -9,7 +10,7 @@ const RoleBasedRedirect = () => {
     return <Navigate to="/login" replace />;
   }
 
-  if (user.role === "Admin" || user.role === "SuperAdmin") {
+  if (user.role === ADMIN || user.role === SUPER_ADMIN) {
     return <Navigate to="/admin/dashboard" replace />;
   }
 

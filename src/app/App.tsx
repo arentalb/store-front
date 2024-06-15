@@ -25,7 +25,8 @@ import { ResetPasswordRequestPage } from "../pages/SharedPages/ResetPasswordRequ
 import { ResetPasswordConfirmPage } from "../pages/SharedPages/ResetPasswordConfirmPage.tsx";
 import { PaymentSuccessPage } from "../pages/UserPages/PaymentSuccessPage.tsx";
 import { AdminDashboardPage } from "../pages/AdminPages/AdminDashboardPage.tsx";
-import RoleBasedRedirect from "../utils/RoleBasedRedirect.tsx"; // Import the new component
+import RoleBasedRedirect from "../utils/RoleBasedRedirect.tsx";
+import { ADMIN, SUPER_ADMIN, USER } from "../constants/roles.ts"; // Import the new component
 
 function App() {
   return (
@@ -49,16 +50,12 @@ function App() {
             element={<ResetPasswordConfirmPage />}
           />
           {/* General Private Route for authenticated users */}
-          <Route
-            element={<PrivateRoute roles={["Admin", "SuperAdmin", "User"]} />}
-          >
+          <Route element={<PrivateRoute roles={[ADMIN, SUPER_ADMIN, USER]} />}>
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/products" element={<UserProductsPage />} />
           </Route>
           {/* Routes for verified users */}
-          <Route
-            element={<PrivateRoute roles={["User"]} mustVerified={true} />}
-          >
+          <Route element={<PrivateRoute roles={[USER]} mustVerified={true} />}>
             <Route path="home" element={<HomePage />} />
             <Route path="/product/:id" element={<UserProductDetailPage />} />
             <Route path="/cart" element={<UserCartPage />} />
@@ -71,10 +68,7 @@ function App() {
           <Route
             path="/admin"
             element={
-              <PrivateRoute
-                roles={["Admin", "SuperAdmin"]}
-                mustVerified={true}
-              />
+              <PrivateRoute roles={[ADMIN, SUPER_ADMIN]} mustVerified={true} />
             }
           >
             <Route path="dashboard" element={<AdminDashboardPage />} />

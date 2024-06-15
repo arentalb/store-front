@@ -15,6 +15,7 @@ import { toast } from "react-toastify";
 import { useLogoutMutation } from "../../redux/auth/authApiSlice.ts";
 import { getUser, logOut } from "../../redux/auth/authSlice.ts";
 import { TApiError } from "../../types/TApiError.ts";
+import { ADMIN, SUPER_ADMIN, USER } from "../../constants/roles.ts";
 
 export function Header() {
   const user = useSelector(getUser);
@@ -56,12 +57,12 @@ export function Header() {
               <li>
                 <details>
                   <summary>
-                    {user.role === "Admin" || user.role === "SuperAdmin"
+                    {user.role === ADMIN || user.role === SUPER_ADMIN
                       ? "Admin"
                       : "Menu"}
                   </summary>
                   <ul className="-translate-x-10 z-50 p-2 bg-base-100 rounded-t-none">
-                    {user.role === "User" ? (
+                    {user.role === USER ? (
                       <>
                         <li>
                           <Link to="/home">
