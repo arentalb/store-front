@@ -41,7 +41,14 @@ const cartApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
         body: { productId },
       }),
-      invalidatesTags: [CART_TAG],
+      invalidatesTags: [CART_TAG, PRODUCT_TAG],
+    }),
+    removeEntireCart: builder.mutation<TApiResponse<void>, void>({
+      query: () => ({
+        url: `${CART_URL}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [CART_TAG, PRODUCT_TAG],
     }),
   }),
 });
@@ -51,4 +58,5 @@ export const {
   useAddToCartMutation,
   useUpdateCartItemMutation,
   useRemoveCartItemMutation,
+  useRemoveEntireCartMutation,
 } = cartApiSlice;
