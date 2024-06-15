@@ -18,6 +18,10 @@ interface verifyRequest {
   email: string;
 }
 
+interface confirmVerifyRequest {
+  token: string;
+}
+
 interface resetRequest {
   email: string;
 }
@@ -68,6 +72,15 @@ const authSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    confirmEmailVerification: builder.mutation<
+      TApiResponse<string>,
+      confirmVerifyRequest
+    >({
+      query: ({ token }) => ({
+        url: `${AUTH_URL}/verify-email/confirm?token=${token}`,
+        method: "GET",
+      }),
+    }),
     resetPasswordRequest: builder.mutation<TApiResponse<string>, resetRequest>({
       query: (data) => ({
         url: `${AUTH_URL}/password-reset/request`,
@@ -96,4 +109,5 @@ export const {
   useSendEmailVerificationMutation,
   useResetPasswordConfirmMutation,
   useResetPasswordRequestMutation,
+  useConfirmEmailVerificationMutation,
 } = authSlice;
