@@ -1,16 +1,19 @@
 import { FiMinus, FiPlus } from "react-icons/fi";
 import { TCartItem } from "../../types/TCart";
+import { Loader } from "../common/Loader.tsx";
 
 interface CartItemProps {
   item: TCartItem;
   handleUpdateCartItem: (productId: string, quantity: number) => void;
   handleRemoveCartItem: (productId: string) => void;
+  loading: boolean;
 }
 
 export function CartItem({
   item,
   handleUpdateCartItem,
   handleRemoveCartItem,
+  loading,
 }: CartItemProps) {
   return (
     <div className="flex justify-between sm:items-center items-start flex-col sm:flex-row p-4 border rounded-lg shadow-md">
@@ -26,13 +29,16 @@ export function CartItem({
         </div>
       </div>
       <div className="flex space-x-2">
+        {loading && <Loader />}
         <button
+          disabled={loading}
           onClick={() => handleUpdateCartItem(item.product, item.quantity - 1)}
           className="btn btn-square btn-primary"
         >
           <FiMinus />
         </button>
         <button
+          disabled={loading}
           onClick={() => handleUpdateCartItem(item.product, item.quantity + 1)}
           className="btn btn-square btn-primary"
         >
@@ -40,6 +46,7 @@ export function CartItem({
         </button>
 
         <button
+          disabled={loading}
           onClick={() => handleRemoveCartItem(item.product)}
           className="btn btn-error"
         >
