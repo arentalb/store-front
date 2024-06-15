@@ -27,7 +27,7 @@ export function Product({ pro }: ProductProps) {
           </p>
         </div>
         <p className="text-sm text-gray-600 whitespace-nowrap">
-          {pro.stock > 0 ? "In Stock" : "Out Of Stock"}
+          {pro.availableStock > 0 ? "In Stock" : "Out Of Stock"}
         </p>
       </div>
       <Link
