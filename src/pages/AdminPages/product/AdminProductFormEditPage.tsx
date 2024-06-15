@@ -10,12 +10,14 @@ import {
 } from "../../../redux/product/productApiSlice.ts";
 import { TApiError } from "../../../types/TApiError.ts";
 import { Loader } from "../../../components/common/Loader.tsx";
-import { FormSelect } from "../../../components/admin/FormSelect";
+import { FormSelect } from "../../../components/common/FormSelect.tsx";
 import { FormInput } from "../../../components/common/FormInput.tsx";
 import { ErrorMessage } from "../../../components/common/ErrorMessage.tsx";
 import { CoverImagePreview } from "../../../components/admin/CoverImagePreview.tsx";
 import { ImagePreview } from "../../../components/admin/ImagePreview.tsx";
 import { useImagePreview } from "../../../hooks/useImagePreview";
+import { FormFileInput } from "../../../components/common/FormFileInput";
+import { FormTextArea } from "../../../components/common/FormTextArea.tsx";
 
 interface IProductFormInputs {
   name: string;
@@ -183,20 +185,23 @@ export function AdminProductFormEditPage() {
           })}
           error={errors.name}
         />
-        <label className="form-control w-full sm:max-w-xs">
-          <div className="label">
-            <span className="label-text">Product description</span>
-          </div>
-          <textarea
-            className="textarea textarea-bordered h-12"
-            {...register("description", {
-              required: "Product description is required",
-            })}
-          ></textarea>
-          {errors.description && (
-            <p className="text-red-500">{errors.description.message}</p>
-          )}
-        </label>
+
+        <FormInput
+          label="Product stock"
+          type="number"
+          registration={register("stock", {
+            required: "Product stock is required",
+          })}
+          error={errors.stock}
+        />
+        <FormInput
+          label="Product price"
+          type="number"
+          registration={register("price", {
+            required: "Product price is required",
+          })}
+          error={errors.price}
+        />
         <FormSelect
           label="Product category"
           registration={register("category", {
@@ -208,22 +213,7 @@ export function AdminProductFormEditPage() {
           }))}
           error={errors.category}
         />
-        <FormInput
-          label="Product price"
-          type="number"
-          registration={register("price", {
-            required: "Product price is required",
-          })}
-          error={errors.price}
-        />
-        <FormInput
-          label="Product stock"
-          type="number"
-          registration={register("stock", {
-            required: "Product stock is required",
-          })}
-          error={errors.stock}
-        />
+
         <FormInput
           label="Product tags (comma separated)"
           type="text"
@@ -232,49 +222,41 @@ export function AdminProductFormEditPage() {
           })}
           error={errors.tags}
         />
-        <div>
-          <label className="form-control w-full sm:max-w-xs mb-4">
-            <div className="label">
-              <span className="label-text">Product cover image</span>
+        <FormTextArea
+          label="Product description"
+          registration={register("description", {
+            required: "Product description is required",
+          })}
+          rows={1}
+          error={errors.description}
+        />
+        <FormFileInput
+          label="Product cover image"
+          registration={register("coverImage", { required: false })}
+          error={errors.coverImage}
+          onChange={handleCoverImageChange}
+          previews={
+            coverImagePreview && <CoverImagePreview src={coverImagePreview} />
+          }
+        />
+        <FormFileInput
+          label="Product images"
+          registration={register("images", { required: false })}
+          error={errors.images}
+          onChange={handleImagesChange}
+          multiple
+          previews={
+            <div className="mt-4 flex flex-wrap gap-4">
+              {imagesPreview.map((src, index) => (
+                <ImagePreview
+                  key={index}
+                  src={src}
+                  onRemove={() => handleRemoveImage(src)}
+                />
+              ))}
             </div>
-            <input
-              type="file"
-              className="file-input file-input-bordered w-full sm:max-w-xs"
-              {...register("coverImage", { required: false })}
-              onChange={handleCoverImageChange}
-            />
-            {errors.coverImage && (
-              <p className="text-red-500">{errors.coverImage.message}</p>
-            )}
-          </label>
-          {coverImagePreview && <CoverImagePreview src={coverImagePreview} />}
-        </div>
-        <div>
-          <label className="form-control w-full sm:max-w-xs mb-4">
-            <div className="label">
-              <span className="label-text">Product images</span>
-            </div>
-            <input
-              type="file"
-              multiple
-              className="file-input file-input-bordered w-full sm:max-w-xs"
-              {...register("images", { required: false })}
-              onChange={handleImagesChange}
-            />
-            {errors.images && (
-              <p className="text-red-500">{errors.images.message}</p>
-            )}
-          </label>
-          <div className="mt-4 flex flex-wrap gap-4">
-            {imagesPreview.map((src, index) => (
-              <ImagePreview
-                key={index}
-                src={src}
-                onRemove={() => handleRemoveImage(src)}
-              />
-            ))}
-          </div>
-        </div>
+          }
+        />
       </div>
       <div className="my-10 flex gap-4 flex-wrap">
         <button

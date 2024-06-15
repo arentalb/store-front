@@ -14,10 +14,10 @@ export function FormSelect({
   error,
 }: FormSelectProps) {
   return (
-    <label className="form-control w-full sm:max-w-xs">
-      <div className="label">
-        <span className="label-text">{label}</span>
-      </div>
+    <div className="form-control w-full  w-full">
+      <label className="label text-gray-700 text-sm font-bold mb-2">
+        {label}
+      </label>
       <select className="select select-bordered" {...registration}>
         <option disabled defaultChecked value="">
           Pick one
@@ -28,7 +28,7 @@ export function FormSelect({
           </option>
         ))}
       </select>
-      {error && <p className="text-red-500">{error.message}</p>}
-    </label>
+      {error && <p className="text-error text-sm mt-2">{error.message}</p>}
+    </div>
   );
 }

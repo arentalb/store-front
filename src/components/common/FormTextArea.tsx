@@ -1,9 +1,7 @@
 import { FieldError, UseFormRegisterReturn } from "react-hook-form";
-import React from "react";
 
-interface InputFormProps {
+interface FormTextAreaProps {
   label?: string;
-  type: string;
   registration: UseFormRegisterReturn;
   placeHolder?: string;
   error?: FieldError;
@@ -11,14 +9,12 @@ interface InputFormProps {
   required?: boolean;
   disabled?: boolean;
   maxLength?: number;
-  autoComplete?: string;
+  rows?: number;
   className?: string;
-  icon?: React.ReactNode;
 }
 
-export function FormInput({
+export function FormTextArea({
   label,
-  type,
   registration,
   error,
   placeHolder,
@@ -26,10 +22,9 @@ export function FormInput({
   required,
   disabled,
   maxLength,
-  autoComplete,
+  rows = 4,
   className,
-  icon,
-}: InputFormProps) {
+}: FormTextAreaProps) {
   return (
     <div className={`form-control w-full ${className}`}>
       {label && (
@@ -40,20 +35,16 @@ export function FormInput({
           {label}
         </label>
       )}
-      <label className="input input-bordered flex items-center gap-2">
-        {icon && <span className="flex items-center">{icon}</span>}
-        <input
-          type={type}
-          id={id}
-          placeholder={placeHolder}
-          className="grow"
-          {...registration}
-          required={required}
-          disabled={disabled}
-          maxLength={maxLength}
-          autoComplete={autoComplete}
-        />
-      </label>
+      <textarea
+        id={id}
+        placeholder={placeHolder}
+        className="textarea textarea-bordered w-full"
+        {...registration}
+        required={required}
+        disabled={disabled}
+        maxLength={maxLength}
+        rows={rows}
+      ></textarea>
       {error && <p className="text-error text-sm mt-2">{error.message}</p>}
     </div>
   );
