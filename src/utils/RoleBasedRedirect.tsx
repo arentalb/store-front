@@ -7,7 +7,7 @@ const RoleBasedRedirect = () => {
   const user = useSelector(getUser);
 
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/home" replace />;
   }
 
   if (user.role === ADMIN || user.role === SUPER_ADMIN) {
