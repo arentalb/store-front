@@ -40,7 +40,7 @@ export function ProductDetails({
           <strong>Description:</strong> {product.description}
         </p>
       </div>
-      <div className="mt-20">
+      <div className=" mt-0 sm:mt-20">
         {isProductAdded ? (
           <div className="flex gap-4 items-center">
             <button

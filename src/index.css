@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* for ToastContainer */
+@media (max-width: 767px) {
+    .toast-mobile {
+        top: 0 !important;
+        right: 50%;
+        transform: translateX(50%);
+        position: fixed;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+
+    }
+}
+
+@media (min-width: 768px) {
+    .toast-desktop {
+        bottom: 1rem !important;
+        right: 1rem !important;
+        position: fixed;
+    }
+}
