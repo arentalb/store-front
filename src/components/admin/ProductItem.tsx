@@ -27,7 +27,7 @@ export function ProductItem({ product }: ProductItemProps) {
         <img
           src={product.coverImage}
           alt={product.name}
-          className="object-cover h-28 md:h-full w-full rounded"
+          className="object-cover h-28  w-full rounded"
         />
       </div>
       <div className="flex flex-col justify-between md:w-2/3 xl:w-3/4">
