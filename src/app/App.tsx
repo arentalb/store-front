@@ -35,6 +35,7 @@ import { AppLayout } from "../components/shared/AppLayout.tsx";
 import { PrivateRoute } from "../utils/PrivateRoute.tsx";
 import RoleBasedRedirect from "../utils/RoleBasedRedirect.tsx";
 import { ADMIN, SUPER_ADMIN, USER } from "../constants/roles.ts";
+import { NotFoundPage } from "../pages/SharedPages/NotFoundPage.tsx";
 
 function App() {
   return (
@@ -97,7 +98,7 @@ function App() {
           </Route>
 
           {/* Catch-all Route */}
-          <Route path="*" element={<p>Not Found</p>} />
+          <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
