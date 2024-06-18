@@ -1,7 +1,7 @@
-# Supermarket E-Commerce  - Frontend
-Welcome to the frontend repository for the Supermarket E-Commerce ! This project is developed using the MERN stack (MongoDB, Express.js, React, Node.js) along with Tailwind CSS, DaisyUI, Redux, and RTK Query for state management and API interactions.
+# Store E-Commerce  - Frontend
+Welcome to the frontend repository for the Store E-Commerce ! This project is developed using the MERN stack (MongoDB, Express.js, React, Node.js) along with Tailwind CSS, DaisyUI, Redux, and RTK Query for state management and API interactions.
 
-Also, you can check out the backend repository for this frontend at https://github.com/arentalb/supermarket-back
+Also, you can check out the backend repository for this frontend at https://github.com/arentalb/store-back
 
 ## Table of Contents
 
@@ -15,7 +15,7 @@ Also, you can check out the backend repository for this frontend at https://gith
 
 ## Introduction
 
-This repository contains the frontend code for the Supermarket E-Commerce . The application provides a comprehensive solution for online shopping, including product listings, user authentication, shopping cart functionality, and an admin dashboard for managing products and orders. 
+This repository contains the frontend code for the Store E-Commerce . The application provides a comprehensive solution for online shopping, including product listings, user authentication, shopping cart functionality, and an admin dashboard for managing products and orders. 
 
 ## Setup Instructions
 
@@ -29,7 +29,7 @@ This repository contains the frontend code for the Supermarket E-Commerce . The 
 
 1. Clone the repository:
     ```bash
-    git clone https://github.com/arentalb/supermarket-front
+    git clone https://github.com/arentalb/store-front
     cd e-commerce-front
     ```
 2. Install dependencies:
