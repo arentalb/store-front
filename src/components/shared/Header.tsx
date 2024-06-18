@@ -50,7 +50,7 @@ export function Header() {
     <div className="navbar bg-base-100">
       <div className="flex-1">
         <Link to="/" className="btn btn-ghost text-xl">
-          SuperMarket
+          Store
         </Link>
       </div>
       <div className="flex-none">
