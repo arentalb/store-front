@@ -15,6 +15,7 @@ import { ProductImages } from "../../components/user/ProductImages";
 import { ProductDetails } from "../../components/user/ProductDetails";
 import { TCart } from "../../types/TCart.ts";
 import { ErrorMessage } from "../../components/common/ErrorMessage.tsx";
+import { ProductReviews } from "../../components/user/ProductReviews.tsx";
 
 export function UserProductDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -95,7 +96,7 @@ export function UserProductDetailPage() {
 
   return (
     <div className="container mx-auto p-4">
-      <div className="flex flex-col gap-8 md:flex-row">
+      <div className="flex flex-col gap-8 md:flex-row mb-20">
         <ProductImages product={product} />
         <ProductDetails
           product={product}
@@ -106,6 +107,7 @@ export function UserProductDetailPage() {
           loading={isAddToCartLoading || isUpdateCartLoading}
         />
       </div>
+      <ProductReviews productId={product._id} />
     </div>
   );
 }

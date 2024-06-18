@@ -4,5 +4,5 @@ export const CATEGORY_URL = "/api/v1/category";
 export const USERS_URL = "/api/v1/users";
 export const ORDER_URL = "/api/v1/orders";
 export const CART_URL = "/api/v1/carts";
-
+export const REVIEW_URL = "/api/v1/products";
 export const PAYMENT_URL = "/api/v1//orders";

@@ -5,6 +5,7 @@ import {
   ORDER_TAG,
   PRODUCT_TAG,
   PROFILE_TAG,
+  REVIEW_TAG,
   USER_TAG,
 } from "./tags.ts";
 import baseQueryWithReauth from "./baseQueryWithReauth.ts";
@@ -18,6 +19,7 @@ const apiSlice = createApi({
     USER_TAG,
     PROFILE_TAG,
     CART_TAG,
+    REVIEW_TAG,
   ],
   endpoints: () => ({}),
 });

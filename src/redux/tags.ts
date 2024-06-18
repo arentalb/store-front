@@ -4,3 +4,4 @@ export const PRODUCT_TAG = "Product";
 export const USER_TAG = "User";
 export const CATEGORY_TAG = "Category";
 export const CART_TAG = "Cart";
+export const REVIEW_TAG = "Review";
