@@ -40,6 +40,7 @@ const orderApiSlice = apiSlice.injectEndpoints({
         url: `${ORDER_URL}`,
         method: "GET",
       }),
+      providesTags: [ORDER_TAG],
     }),
     getUserOrderDetail: builder.query<TApiResponse<TOrder>, string>({
       query: (id) => ({

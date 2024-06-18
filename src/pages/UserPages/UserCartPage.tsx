@@ -60,7 +60,7 @@ export function UserCartPage() {
 
   if (isCartLoading) return <Loader />;
 
-  if (!cart) {
+  if (!cart || cart.items.length === 0) {
     return <EmptyMessage message={"No cart item available "} />;
   }
   return (

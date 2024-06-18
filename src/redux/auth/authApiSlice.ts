@@ -1,7 +1,7 @@
 import { AUTH_URL } from "../endpoints.ts";
 import apiSlice from "../apiSlice.ts";
 import { TApiResponse } from "../../types/TApiResponse.ts";
-import { PROFILE_TAG } from "../tags.ts";
+import { CART_TAG, ORDER_TAG, PRODUCT_TAG, PROFILE_TAG } from "../tags.ts";
 
 interface LoginRequest {
   email: string;
@@ -46,14 +46,14 @@ const authSlice = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: [PROFILE_TAG],
+      invalidatesTags: [PROFILE_TAG, CART_TAG, PRODUCT_TAG, ORDER_TAG],
     }),
     logout: builder.mutation<TApiResponse<null>, void>({
       query: () => ({
         url: `${AUTH_URL}/logout`,
         method: "POST",
       }),
-      invalidatesTags: [PROFILE_TAG],
+      invalidatesTags: [PROFILE_TAG, CART_TAG, PRODUCT_TAG, ORDER_TAG],
     }),
     register: builder.mutation<TApiResponse<string>, RegisterRequest>({
       query: (data) => ({
