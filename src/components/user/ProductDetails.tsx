@@ -35,6 +35,9 @@ export function ProductDetails({
       <p className="text-lg text-gray-600">
         <strong>Available in Stock:</strong> {product.availableStock}
       </p>
+      <p className="text-lg text-gray-600">
+        <strong>Average Rating</strong> {product.averageRating}
+      </p>
       <div className="md:hidden block">
         <p className="text-lg text-gray-600">
           <strong>Description:</strong> {product.description}
