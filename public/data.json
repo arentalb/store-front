@@ -1,0 +1,134 @@
+[
+  {
+    "name": "Gaming Headset",
+    "description": "Comfortable gaming headset with surround sound and noise-canceling microphone.",
+    "tags": [
+      "electronics",
+      "computer accessories",
+      "gaming"
+    ],
+    "price": 12000,
+    "stock": 7,
+    "category": "gaming"
+  },
+  {
+    "name": "Gaming Monitor",
+    "description": "27-inch gaming monitor with 144Hz refresh rate and 1ms response time.",
+    "tags": [
+      "electronics",
+      "computer accessories",
+      "gaming"
+    ],
+    "price": 45000,
+    "stock": 3,
+    "category": "electronics"
+  },
+  {
+    "name": "Gaming Laptop",
+    "description": "High-performance gaming laptop with the latest graphics card and processor.",
+    "tags": [
+      "electronics",
+      "computer accessories",
+      "gaming"
+    ],
+    "price": 150000,
+    "stock": 2,
+    "category": "electronics"
+  },
+  {
+    "name": "RGB Mouse Pad",
+    "description": "Large mouse pad with customizable RGB lighting and non-slip base.",
+    "tags": [
+      "electronics",
+      "computer accessories",
+      "gaming"
+    ],
+    "price": 3000,
+    "stock": 15,
+    "category": "gaming"
+  },
+  {
+    "name": "Gaming Controller",
+    "description": "Wireless gaming controller with customizable buttons and vibration feedback.",
+    "tags": [
+      "electronics",
+      "computer accessories",
+      "gaming"
+    ],
+    "price": 9000,
+    "stock": 8,
+    "category": "gaming"
+  },
+  {
+    "name": "Gaming Desk",
+    "description": "Sturdy gaming desk with cable management and RGB lighting.",
+    "tags": [
+      "electronics",
+      "computer accessories",
+      "gaming"
+    ],
+    "price": 20000,
+    "stock": 4,
+    "category": "home & office"
+  },
+  {
+    "name": "VR Headset",
+    "description": "Immersive VR headset with high-resolution display and precise tracking.",
+    "tags": [
+      "electronics",
+      "computer accessories",
+      "gaming"
+    ],
+    "price": 60000,
+    "stock": 6,
+    "category": "electronics"
+  },
+  {
+    "name": "Smartwatch",
+    "description": "Feature-rich smartwatch with fitness tracking and customizable watch faces.",
+    "tags": [
+      "electronics",
+      "wearable",
+      "fitness"
+    ],
+    "price": 18000,
+    "stock": 10,
+    "category": "electronics"
+  },
+  {
+    "name": "4K TV",
+    "description": "55-inch 4K Ultra HD TV with HDR and smart features.",
+    "tags": [
+      "electronics",
+      "home entertainment",
+      "television"
+    ],
+    "price": 70000,
+    "stock": 7,
+    "category": "home & office"
+  },
+  {
+    "name": "External Hard Drive",
+    "description": "1TB external hard drive with USB 3.0 for fast data transfer.",
+    "tags": [
+      "electronics",
+      "storage",
+      "computer accessories"
+    ],
+    "price": 6000,
+    "stock": 25,
+    "category": "electronics"
+  },
+  {
+    "name": "Wireless Charger",
+    "description": "Fast wireless charger compatible with all Qi-enabled devices.",
+    "tags": [
+      "electronics",
+      "mobile accessories",
+      "charging"
+    ],
+    "price": 3000,
+    "stock": 30,
+    "category": "electronics"
+  }
+]
