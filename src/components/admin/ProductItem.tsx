@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import moment from "moment/moment";
+import { FullImageUrl } from "../../utils/FullImageUrl.ts";
 
 interface ProductItemProps {
   product: {
@@ -25,7 +26,7 @@ export function ProductItem({ product }: ProductItemProps) {
     >
       <div className="md:w-1/3 xl:w-1/4">
         <img
-          src={product.coverImage}
+          src={FullImageUrl(product.coverImage)}
           alt={product.name}
           className="object-cover h-28  w-full rounded"
         />

@@ -1,4 +1,5 @@
 import { TProduct } from "../../types/TProduct";
+import { FullImageUrl } from "../../utils/FullImageUrl.ts";
 
 interface ProductImagesProps {
   product: TProduct;
@@ -8,7 +9,7 @@ export function ProductImages({ product }: ProductImagesProps) {
   return (
     <div className="w-full md:w-1/2">
       <img
-        src={product.coverImage}
+        src={FullImageUrl(product.coverImage)}
         alt={product.name}
         className="w-full rounded-lg shadow-md object-cover h-64 md:h-64"
       />
@@ -16,7 +17,7 @@ export function ProductImages({ product }: ProductImagesProps) {
         {product.images.map((image, index) => (
           <img
             key={index}
-            src={image}
+            src={FullImageUrl(image)}
             alt={`${product.name} ${index + 1}`}
             className="w-full rounded-lg shadow-md object-cover h-32 sm:h-32"
           />

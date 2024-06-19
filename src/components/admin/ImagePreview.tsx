@@ -1,4 +1,5 @@
 import { FiX } from "react-icons/fi";
+import { FullImageUrl } from "../../utils/FullImageUrl.ts";
 
 interface ImagePreviewProps {
   src: string;
@@ -9,7 +10,7 @@ export function ImagePreview({ src, onRemove }: ImagePreviewProps) {
   return (
     <div className="relative h-20 w-20">
       <img
-        src={src}
+        src={FullImageUrl(src)}
         alt="Preview"
         className="h-full w-full object-cover rounded-md"
       />

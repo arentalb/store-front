@@ -1,6 +1,7 @@
 import { FiMinus, FiPlus } from "react-icons/fi";
 import { TCartItem } from "../../types/TCart";
 import { Loader } from "../common/Loader.tsx";
+import { FullImageUrl } from "../../utils/FullImageUrl.ts";
 
 interface CartItemProps {
   item: TCartItem;
@@ -19,7 +20,7 @@ export function CartItem({
     <div className="flex justify-between sm:items-center items-start flex-col sm:flex-row p-4 border rounded-lg shadow-md">
       <div className="flex items-center space-x-4 mb-4 sm:mb-0">
         <img
-          src={item.coverImage}
+          src={FullImageUrl(item.coverImage)}
           alt={item.name}
           className="w-20 h-20 object-cover rounded-lg"
         />

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { TProduct } from "../../types/TProduct.ts";
+import { FullImageUrl } from "../../utils/FullImageUrl.ts";
 
 interface ProductProps {
   product: TProduct;
@@ -13,7 +14,7 @@ export function Product({ product }: ProductProps) {
     >
       <div className="w-full">
         <img
-          src={product.coverImage}
+          src={FullImageUrl(product.coverImage)}
           alt={product.name}
           className="object-cover h-28 w-full rounded"
         />
