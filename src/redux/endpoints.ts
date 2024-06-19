@@ -6,3 +6,4 @@ export const ORDER_URL = "/api/v1/orders";
 export const CART_URL = "/api/v1/carts";
 export const REVIEW_URL = "/api/v1/products";
 export const PAYMENT_URL = "/api/v1//orders";
+export const METRICS_URL = "/api/v1/metrics";

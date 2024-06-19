@@ -17,6 +17,7 @@ import { getUser, logOut } from "../../redux/auth/authSlice.ts";
 import { TApiError } from "../../types/TApiError.ts";
 import { ADMIN, SUPER_ADMIN, USER } from "../../constants/roles.ts";
 import { useRef } from "react";
+import { TbLayoutDashboard } from "react-icons/tb";
 
 export function Header() {
   const user = useSelector(getUser);
@@ -190,6 +191,14 @@ export function Header() {
                       </summary>
                       <ul className="-translate-x-10 z-50 p-2 bg-base-100 rounded-t-none">
                         <li>
+                          <Link
+                            to="/admin/dashboard"
+                            className={isActive("/admin/dashboard")}
+                            onClick={closeDropdown}
+                          >
+                            <TbLayoutDashboard />
+                            Dashboard
+                          </Link>
                           <Link
                             to="/admin/product"
                             className={isActive("/admin/product")}
