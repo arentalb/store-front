@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../store.ts";
-import { TUser } from "../../types/TUser.ts";
+import { RootState } from "../store";
+import { TUser } from "../../types/TUser";
 
 interface AuthState {
   user: TUser | null;
@@ -29,6 +29,8 @@ const authSlice = createSlice({
     logOut: (state) => {
       state.user = null;
       localStorage.removeItem("user");
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
     },
   },
 });

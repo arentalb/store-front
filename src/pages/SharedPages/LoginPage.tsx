@@ -18,10 +18,8 @@ interface LoginFormInputs {
 
 export function LoginPage() {
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
-
   const [login, { isLoading }] = useLoginMutation();
 
   const {
@@ -40,13 +38,16 @@ export function LoginPage() {
     try {
       const res = await login(credential).unwrap();
       toast.success("Login succeeded");
-      dispatch(setCredentials({ ...res.data }));
+      const { accessToken, refreshToken, ...userData } = res.data;
+      dispatch(setCredentials(userData));
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      navigate("/");
     } catch (error) {
       const apiError = error as TApiError;
       toast.error(apiError.data.message);
     }
   };
-
   return (
     <div className={"py-20"}>
       <h1 className={"text-3xl font-bold mb-8"}>Login form</h1>

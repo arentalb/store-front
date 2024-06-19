@@ -31,11 +31,13 @@ interface resetConfirmRequest {
   token: string;
 }
 
-interface User {
+export interface User {
   username: string;
   email: string;
   role: string;
   isVerified: boolean;
+  accessToken: string;
+  refreshToken: string;
 }
 
 const authSlice = apiSlice.injectEndpoints({
