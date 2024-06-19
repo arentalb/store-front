@@ -3,6 +3,8 @@ Welcome to the frontend repository for the Store E-Commerce ! This project is de
 
 Also, you can check out the backend repository for this frontend at https://github.com/arentalb/store-back
 
+And you can checkout the live version of it at https://store-front-3fxx.onrender.com/
+
 ## Table of Contents
 
 - [Introduction](#introduction)
