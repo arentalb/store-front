@@ -2,8 +2,8 @@ import apiSlice from "../apiSlice.ts";
 import { TApiResponse } from "../../types/TApiResponse.ts";
 import { USERS_URL } from "../endpoints.ts";
 import { TUser, TUserDetail } from "../../types/TUser.ts";
-import { TPassword } from "../../pages/SharedPages/ProfilePage.tsx";
 import { PROFILE_TAG } from "../tags.ts";
+import { TPassword } from "../../components/profile/PasswordChangeForm.tsx";
 
 const userApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
