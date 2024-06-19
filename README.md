@@ -100,6 +100,7 @@ Here are some images of the final result:
 
 ## Admin 
 
+![admin dashboard (10)](https://github.com/arentalb/store-front/assets/70669302/fdd2a7d2-58d3-4f29-95fb-e77387095135)
 ![admin dashboard (7)](https://github.com/arentalb/store-front/assets/70669302/50f03f73-beab-4b50-a8c1-2288522ef6c9)
 ![admin dashboard (8)](https://github.com/arentalb/store-front/assets/70669302/7595ee6e-e0ec-4b1c-aa17-d95092ca5599)
 ![admin dashboard (9)](https://github.com/arentalb/store-front/assets/70669302/5b8a8e46-8ca4-4fd5-804c-92ad38476c84)
