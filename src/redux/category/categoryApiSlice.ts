@@ -1,4 +1,3 @@
-// categoryApiSlice.ts
 import apiSlice from "../apiSlice.ts";
 import { TApiResponse } from "../../types/TApiResponse.ts";
 import { CATEGORY_URL } from "../endpoints.ts";

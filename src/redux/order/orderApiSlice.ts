@@ -1,14 +1,11 @@
-import {ORDER_URL} from "../endpoints.ts";
+import { ORDER_URL } from "../endpoints.ts";
 import apiSlice from "../apiSlice";
-import {TApiResponse} from "../../types/TApiResponse.ts";
-import {TOrder, TShippingAddress} from "../../types/TOrder.ts";
-import {CART_TAG, ORDER_TAG} from "../tags.ts";
-
-// src/redux/api/orderApiSlice.ts
+import { TApiResponse } from "../../types/TApiResponse.ts";
+import { TOrder, TShippingAddress } from "../../types/TOrder.ts";
+import { CART_TAG, ORDER_TAG } from "../tags.ts";
 
 const orderApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    // admin section
     getOrders: builder.query<TApiResponse<TOrder[]>, void>({
       query: () => ({
         url: `${ORDER_URL}/all`,
@@ -34,7 +31,6 @@ const orderApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: [ORDER_TAG],
     }),
-    // user section
     getUserOrders: builder.query<TApiResponse<TOrder[]>, void>({
       query: () => ({
         url: `${ORDER_URL}`,
@@ -60,11 +56,9 @@ const orderApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-  // admin
   useGetOrdersQuery,
   useGetOrderDetailQuery,
   useUpdateOrderStatusMutation,
-  // user
   useCreateUserOrderMutation,
   useGetUserOrdersQuery,
   useGetUserOrderDetailQuery,
