@@ -8,6 +8,10 @@ export interface TMetrics {
   avgOrderValue: number;
   topSellingProducts: { productId: string; name: string; totalSold: number }[];
   newUsers: number;
+  salesData: { date: string; totalSales: number }[];
+  ordersData: { date: string; totalOrders: number }[];
+  orderValueData: { date: string; avgOrderValue: number }[];
+  newUsersData: { date: string; newUsers: number }[];
 }
 
 const metricsApiSlice = apiSlice.injectEndpoints({
